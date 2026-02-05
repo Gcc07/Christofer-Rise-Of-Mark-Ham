@@ -4,7 +4,6 @@ import java.util.Hashtable;
 import java.util.Dictionary;
 
 public class GameFlow {
-    public static Scanner input = new Scanner(System.in);
     // Display Game Title (Seperate Function)
         // Play
         // Settings
@@ -19,13 +18,16 @@ public class GameFlow {
         System.out.printf("\t1. Play\n\t2. Settings\n");
     }
  
-    public static void getIntInput() {
-        
-        try(Scanner input = new Scanner(System.in)) {
-            System.out.println("Enter a valid int: ");
-            input.nextInt();
+    private static final Scanner input = new Scanner(System.in);
+    public static int getIntInput() {
+        System.out.print("Enter a valid int: ");
+        try {
+            return input.nextInt();
+        } catch (Exception e) {
+            System.out.println("This is an invalid input. Try again.");
+            input.nextLine();
+            return getIntInput();
         }
-
     }
 
     public static ArrayList<Dictionary> createPlayer(){
@@ -67,7 +69,7 @@ public class GameFlow {
         //Sam’s Dagger
         //Mr. McCuen's Pearson Piercer
         //Mr. Gardner's Participation Point Piercer
-        String[] weaponChoice = {"N’s Odachi of the East",}
+        public String[] weaponChoice = {"N’s Odachi of the East", "Cursed Mouse", "Evan’s Great Mace of Destruction", "Maxwell’s Spear of the Enraged", "Sixsev-un-chucks of Troy"}
 
     }
 }    
