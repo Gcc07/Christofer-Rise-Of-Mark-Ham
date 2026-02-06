@@ -15,7 +15,14 @@ public class Enemy {
             
             case "Adamaro, First to Desire":
                 enemyStats.put("Life", 350);
-                enemyStats.put("Damage", 30);    
+                enemyStats.put("Damage", 30); 
+            case "Amzu, Swarm's Hunger":
+                enemyStats.put("Life", 350);
+                enemyStats.put("Damage", 30);
+            case "Final Form Gardner":
+                enemyStats.put("Life", 350);
+                enemyStats.put("Damage", 30); 
+              
         }
 
     }

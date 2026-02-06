@@ -75,7 +75,14 @@ public class Item {
                 break;
             case "Card Key":
                 this.name = name;
-                this.desc
+                this.description = "Key of gathering magic";
+                this.type = itemTypes[1];
+                break;
+            case "Key Key":
+                this.name = name;
+                this.description = "Key of key";
+                this.type = itemTypes[1];
+                break;
             }
         }
     
