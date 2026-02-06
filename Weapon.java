@@ -1,10 +1,7 @@
-import java.util.Dictionary;
-
 public class Weapon extends Item{
     protected int damage;
     protected float critChance;
-    protected Dictionary<String, Item> items;
-    public static String[] nameChoices = {"N’s Odachi of the East", "Cursed Mouse", "Evan’s Great Mace of Destruction", "Maxwell’s Spear of the Enraged", "Sixsev-un-chucks of Troy"};
+    public static String[] nameChoices = {"N's Odachi of the East", "Cursed Mouse", "Evan's Great Mace of Destruction", "Maxwell's Spear of the Enraged", "Sixsev-un-chucks of Troy"};
     public Weapon(String name) { 
         this.name = name;
         switch(name) { // I used claude to create the switch cases after I made one singular case. - GABE
@@ -106,7 +103,5 @@ public class Weapon extends Item{
         return nameChoices[index];
     }
 
-    public String toString() {
-        return name + "\n" + description;
-    }
+
 }

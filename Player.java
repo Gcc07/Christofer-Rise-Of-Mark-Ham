@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Dictionary;
 
 public class Player {
@@ -7,9 +8,9 @@ public class Player {
     protected int currentMP;
     protected float fleeChance;
     protected Dictionary<String, Integer> stats;
-    protected Dictionary<String, Item> items;
+    protected ArrayList<Item> items;
     
-    public Player(String name, Dictionary<String, Integer> stats, Dictionary<String,Item> items) {
+    public Player(String name, Dictionary<String, Integer> stats, ArrayList<Item> items) {
         this.name = name;
         this.stats = stats; // Life, Anger, Peace, Smartness, Finesse
         this.items = items; // Life, Anger, Peace, Smartness, Finesse
@@ -27,6 +28,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "\nStats: " + stats.toString() + "\n" + "Stats: " + items.toString() + "\n" ;
+        return "\nName: " + name + "\nStats: " + stats.toString() + "\n" + "Items: " + items.toString() + "\n" ;
     }
 }
