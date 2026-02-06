@@ -12,19 +12,33 @@ public class GameFlow {
         runGameLoop();
     }
 
+    public static void waitSeconds(int seconds) {
+        try {
+            Thread.sleep(seconds * 1000L);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
     public static void runGameLoop() {
         displayTitle();
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
             runCharacterCreation();
         }
-
+        
     }
 
     public static void displayTitle() {
         System.out.println("================================");
         System.out.println("CHRISTOFER: THE RISE OF MARK-HAM");
         System.out.printf("\n1. Play\n2. Settings\n\n");
+    }
+
+    public static void intro() {
+        System.out.println("Welcome to Earlycolegia");
+        System.out.println("The villain Chris-tofer, after being defeated by a legendary moon warrior descends to the Ruins of Be-Ta to steal the dungeon core; perhaps one day");
+        waitSeconds(3);
     }
  
     private static final Scanner input = new Scanner(System.in);
@@ -61,7 +75,7 @@ public class GameFlow {
         stats.put("Finesse", (Integer)rollRandom(1, 20));
 
         ArrayList<Item> items = new ArrayList<>(); // Storage spot for items and weapons
-        items.add(new Weapon(Weapon.chooseRandomWeapon()));
+        items.add(new Weapon(Weapon.returnRandomWeapon()));
         
         Player player = new Player(name, stats, items);
         

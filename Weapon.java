@@ -1,6 +1,7 @@
 public class Weapon extends Item{
     protected int damage;
-    protected float critChance;
+    protected String prefix;
+    protected float critChance; // IDK if this is going to be implemented
     public static String[] nameChoices = {"N's Odachi of the East", "Cursed Mouse", "Evan's Great Mace of Destruction", "Maxwell's Spear of the Enraged", "Sixsev-un-chucks of Troy"};
     public Weapon(String name) { 
         this.name = name;
@@ -98,10 +99,8 @@ public class Weapon extends Item{
                 break;
         }
     }
-    public static String chooseRandomWeapon() {
+    public static String returnRandomWeapon() { // Returns a random weapon name from the nameChoices list
         int index = (int) (Math.random() * (nameChoices.length));
         return nameChoices[index];
     }
-
-
 }
