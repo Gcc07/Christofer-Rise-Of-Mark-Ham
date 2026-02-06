@@ -8,6 +8,7 @@ public class Weapon extends Item{
     public Weapon(String name) { 
         this.name = name;
         switch(name) { // I used claude to create the switch cases after I made one singular case. - GABE
+            // Also, I wrote all of the item descriptions.
             case "N's Odachi of the East":
                 this.damage = 45;
                 this.critChance = 0.15f;
