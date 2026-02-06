@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Scanner;
@@ -10,6 +9,15 @@ public class GameFlow {
     // 
     public static void main(String[] args) {
         runGameLoop();
+    }
+
+    public static void runGameLoop() {
+        displayTitle();
+        int playerDecision = getIntInput("Input: ");
+        if (playerDecision == 1) {
+            runCharacterCreation();
+        }
+
     }
 
     public static void displayTitle() {
@@ -41,12 +49,6 @@ public class GameFlow {
         }
     }
 
-
-    public static void runGameLoop() {
-        displayTitle();
-
-    }
-
     public static void runCharacterCreation() {
         String name = getStringInput("Who are you?");
 
@@ -57,8 +59,9 @@ public class GameFlow {
         stats.put("Smartness", (Integer)rollRandom(1, 20));
         stats.put("Finesse", (Integer)rollRandom(1, 20));
 
-        Dictionary<String, Integer> items = new Hashtable<>(); // Storage spot for items and weapons
-        stats.put("Weapon", new Weapon(Weapon.chooseRandom));
+        Dictionary<String, Item> items = new Hashtable<>(); // Storage spot for items and weapons
+        items.put("Weapon", new Weapon(Weapon.chooseRandomWeapon()));
+        
         Player player = new Player(name, stats, items);
         
         System.out.println(player.toString());
