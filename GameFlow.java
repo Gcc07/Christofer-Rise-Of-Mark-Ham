@@ -1,7 +1,7 @@
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.Scanner;
 
 public class GameFlow {
     // Display Game Title (Seperate Function)
@@ -19,33 +19,48 @@ public class GameFlow {
     }
  
     private static final Scanner input = new Scanner(System.in);
-    public static int getIntInput() {
-        System.out.print("Enter a valid int: ");
+    public static int getIntInput(String prompt) {
+        System.out.print(prompt);
         try {
             return input.nextInt();
         } catch (Exception e) {
             System.out.println("This is an invalid input. Try again.");
             input.nextLine();
-            return getIntInput();
+            return getIntInput(prompt);
         }
     }
 
-    public static ArrayList<Dictionary> createPlayer(){
-        Dictionary<String, Integer> softStat = new Hashtable<>(); // HP, MP, Flee Chance, 
-        Dictionary<String, Integer> hardStat = new Hashtable<>(); // Life, Anger, Peace, Smartness, Finesse, Weapon, Name
-        Dictionary<String, Integer> items = new Hashtable<>(); // All Items
-        ArrayList<Dictionary> playerStats = new ArrayList<>(); // hard stats, soft stats, items
-
-        playerStats.add(hardStat);
-        playerStats.add(softStat);
-        playerStats.add(items);
-        
-        return playerStats;
+    public static String getStringInput(String prompt) {
+        System.out.print(prompt);
+        try {
+            return input.nextLine();
+        } catch (Exception e) {
+            System.out.println("This is an invalid input. Try again.");
+            input.nextLine();
+            return getStringInput(prompt);
+        }
     }
+
 
     public static void runGameLoop() {
         displayTitle();
-        ArrayList<Dictionary> player = createPlayer();
+
+    }
+
+    public static void runCharacterCreation() {
+        String name = getStringInput("Who are you?");
+
+        Dictionary<String, Integer> stats = new Hashtable<>(); // Life, Anger, Peace, Smartness, Finesse
+        stats.put("Life", (Integer)rollRandom(1, 20));
+        stats.put("Anger", (Integer)rollRandom(1, 20));
+        stats.put("Peace", (Integer)rollRandom(1, 20));
+        stats.put("Smartness", (Integer)rollRandom(1, 20));
+        stats.put("Finesse", (Integer)rollRandom(1, 20));
+
+        Dictionary<String, Integer> items = new Hashtable<>(); // Storage spot for items and weapons
+        stats.put("Weapon", new Weapon(Weapon.chooseRandom));
+        Player player = new Player(name, stats, items);
+        
         System.out.println(player.toString());
     }
 
@@ -54,23 +69,5 @@ public class GameFlow {
         return stat;
     }
     
-    public class createWeapon() {
-        //N’s Odachi of the East - Samosas heals 200% more
-        //Cursed Mouse - Either does 50% more or less damage (50 50 chance)
-        //Evan’s Great Mace of Destruction - Highest Damaging Weapon in Game (scales with height)
-        //Maxwell’s Spear of the Enraged - 20% more damage to Human enemies
-        //Sixsev-un-chucks of Troy - always does a multiple of 6 or 7 damage
-        //Karan’s Rageful Rapier - scales better with Anger
-        //Phil’s Drumsticks
-        //Katars of Humanity - Scales with peacefulness and anger
-        //Unicycle 
-        //A’s Javatana
-        //Guatana
-        //Sam’s Dagger
-        //Mr. McCuen's Pearson Piercer
-        //Mr. Gardner's Participation Point Piercer
-        public String[] weaponChoice = {"N’s Odachi of the East", "Cursed Mouse", "Evan’s Great Mace of Destruction", "Maxwell’s Spear of the Enraged", "Sixsev-un-chucks of Troy"}
-
-    }
 }    
     
