@@ -2,8 +2,10 @@ public class Weapon extends Item{
     protected int damage;
     protected String prefix;
     protected float critChance; // IDK if this is going to be implemented
+    protected float dropChance; // IDK if this is going to be implemented
     public static String[] nameChoices = {"N's Odachi of the East", "Cursed Mouse", "Evan's Great Mace of Destruction", "Maxwell's Spear of the Enraged", "Sixsev-un-chucks of Troy"};
     public Weapon(String name) { 
+        super(name);
         this.name = name;
         switch(name) { // I used claude to create the switch cases after I made one singular case. - GABE
             // Also, I wrote all of the item descriptions.
@@ -35,7 +37,7 @@ public class Weapon extends Item{
                 // Special: 20% more damage to Human enemies
                 break;
                 
-            case "Sixsev-un-chucks of Troy":
+            case "Sixsev-UN-chucks of Troy":
                 this.damage = 42; // Multiple of 6 and 7
                 this.critChance = 0.12f;
                 this.description = "A six-inch link of pure iron chained two a seven-inch hilt of gold. You feel indecisive in it's presence.";

@@ -20,10 +20,45 @@ public class GameFlow {
         }
     }
 
+
+    public static void typewrite(int speed, String text, boolean useNewLine) {
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            System.out.flush();
+            try {
+                Thread.sleep(speed);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        if (!useNewLine) {
+            return;
+        }
+        System.out.println("");
+    }
+
+    public static final long typeSpeed = 20;
+    public static void typewrite(String text) {
+        for (char c : text.toCharArray()) {
+            System.out.print(c);
+            System.out.flush();
+            try {
+                Thread.sleep(typeSpeed);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                break;
+            }
+        }
+        System.out.println("");
+    }
+
+
     public static void runGameLoop() {
         displayTitle();
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
+            intro();
             runCharacterCreation();
         }
         
@@ -36,9 +71,14 @@ public class GameFlow {
     }
 
     public static void intro() {
-        System.out.println("Welcome to Earlycolegia");
-        System.out.println("The villain Chris-tofer, after being defeated by a legendary moon warrior descends to the Ruins of Be-Ta to steal the dungeon core; perhaps one day");
-        waitSeconds(3);
+        typewrite("After his fall at the hands of a legendary Moon Warrior, Chris-tofer---the Script-King---had retreated into the Ruins of Be-Ta, where he ploted his return to power.");
+        typewrite("Whispers, rumors, and half-forgotten tales suggest that the Legendary Conqueror Mark-Ham is, in truth, Chris-topher.");
+        waitSeconds(1);
+        typewrite(50, "You will be the one to stop his ascension", false);
+        typewrite(1000, "...", false);
+        waitSeconds(1);
+        typewrite(400, " perchance. ", true);
+        waitSeconds(4);
     }
  
     private static final Scanner input = new Scanner(System.in);
@@ -65,7 +105,7 @@ public class GameFlow {
     }
 
     public static void runCharacterCreation() {
-        String name = getStringInput("Who are you?");
+        String name = getStringInput("What is your name?");
 
         Dictionary<String, Integer> stats = new Hashtable<>(); // Life, Anger, Peace, Smartness, Finesse
         stats.put("Life", (Integer)rollRandom(1, 20));
