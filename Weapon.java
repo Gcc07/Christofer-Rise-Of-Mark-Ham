@@ -1,13 +1,14 @@
 import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class Weapon extends Item{
     protected String prefix;
     protected float damage;
     protected float critChance; // IDK if this is going to be implemented
-    protected float dropChance; // IDK if this is going to be implemented
+    
     protected Dictionary<String, Float> scalingType;
 
-    public static String[] nameChoices = {
+    public static String[] weaponNames = {
     "N's Odachi of the East", 
     "Cursed Mouse", 
     "Evan's Great Mace of Destruction", 
@@ -24,7 +25,9 @@ public class Weapon extends Item{
     };
     public Weapon(String name) { 
         super(name);
+        this.type = "Weapon";
         this.name = name;
+        this.scalingType = new Hashtable<>();
         switch(name) { // I used claude to create the switch cases after I made one singular case. - GABE
             // Also, I wrote all of the item descriptions.
             case "N's Odachi of the East":
@@ -38,6 +41,7 @@ public class Weapon extends Item{
                 this.damage = 30;
                 this.critChance = 0.10f;
                 this.description = "A weapon forged of plasticite, it periodically phases in and out of reality.";
+                this.scalingType.put("Anger", 0.20f);
                 // Special: 50/50 chance for 50% more or less damage
                 break;
                 
@@ -109,7 +113,7 @@ public class Weapon extends Item{
             case "Mr. Gardner's Participation Point Piercer":
                 this.damage = 28;
                 this.critChance = 0.30f;
-                this.description = "The lands of Earlycolegia only exist because of the Whim of Mr. Gardner. His defeat at the hands of the moon warrior was fate, yet he did not die.\nThis weapon is proof of that.";
+                this.description = "The lands of Earlycolegia only exist because of the Whim of Mr. Gardner. His defeat at the hands of the moon warrior was fate, yet he did not die. This weapon is proof of that.";
                 break;
                 
             default:
@@ -119,8 +123,32 @@ public class Weapon extends Item{
                 break;
         }
     }
-    public static String returnRandomWeapon() { // Returns a random weapon name from the nameChoices list
-        int index = (int) (Math.random() * (nameChoices.length));
-        return nameChoices[index];
+    public static String returnRandom() { // Returns a random weapon name from the nameChoices list
+        int index = (int) (Math.random() * (weaponNames.length));
+        return weaponNames[index];
+    }
+
+    @Override
+    public String toString() {
+        String scalingStringValues = "";
+        if (scalingType != null && scalingType.size() > 0) { // Making sure there is a actually a scaling type.
+            for (String key : java.util.Collections.list(scalingType.keys())) {
+                Float value = scalingType.get(key);
+                String color = "";
+                switch(key) {
+                    case "Life": color = GameFlow.ANSI_PURPLE; break;
+                    case "Anger": color = GameFlow.ANSI_RED; break;
+                    case "Peace": color = GameFlow.ANSI_YELLOW; break;
+                    case "Smartness": color = GameFlow.ANSI_CYAN; break;
+                    case "Finesse": color = GameFlow.ANSI_GREEN; break;
+                }
+                scalingStringValues += color + key + ": " + GameFlow.ANSI_RESET + value + " ";
+            }
+        } else {
+            scalingStringValues =  GameFlow.ANSI_GREY + "None" +  GameFlow.RESET;
+        }
+        
+        return "\n\t" + name + " | " + type + " | Scaling - " + scalingStringValues
+             + "\n\tDescription: " + description + "\n\t";
     }
 }

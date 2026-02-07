@@ -1,10 +1,11 @@
 import java.util.Dictionary;
 
-public class Enemy {
-    public static String[] enemyNames = {"Goblin", "Chiikawa", "Slime", "Skeleton", "Hell-Pig", "Nantuko"};
+public class Boss extends Enemy {
+    public static String[] bossNames = {"Rith, the Awakener", "Adamaro, First to Desire", "Amzu, Swarm's Hunger", "Mr. McCuen, Secret Saboteur", "Final Form Gardner"};
     protected Dictionary<String, Integer> enemyStats;
 
-    public Enemy(String name) {
+    public Boss(String name) {
+        super(name);
         switch (name) {
             case "Rith, the Awakener" :
                 enemyStats.put("Life", 200);
@@ -21,8 +22,8 @@ public class Enemy {
               
         }
     }
-    public static String returnRandom() { // Returns a random enemy name from the enemyNames list
-        int index = (int) (Math.random() * (enemyNames.length));
-        return enemyNames[index];
+    public static String returnRandom() { // Returns a random enemy name from the nameChoices list
+        int index = (int) (Math.random() * (bossNames.length));
+        return bossNames[index];
     }
 }

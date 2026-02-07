@@ -4,8 +4,13 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 public class GameFlow {
+
     // Color codes for game
+    // A couple things about these codes, you format it as:         CODE + "String" + RESET             In order to make colored text. - Gabe
+    // If you need to use them in another file, simply call:            GameFlow.CODE;
+    
     public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_GREY = "\u001B[90m"; 
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -16,8 +21,8 @@ public class GameFlow {
     public static final String RESET = "\u001B[37m";
     
     // Scanner Input methods
-    private static final Scanner input = new Scanner(System.in);
 
+    private static final Scanner input = new Scanner(System.in);
     public static int getIntInput(String prompt) {
         System.out.print(prompt);
         try {
@@ -45,6 +50,7 @@ public class GameFlow {
         runGameLoop();
     }
 
+    // Roblox wait function in java!
     public static void waitSeconds(int seconds) {
         try {
             Thread.sleep(seconds * 1000L);
@@ -52,6 +58,8 @@ public class GameFlow {
             Thread.currentThread().interrupt();
         }
     }
+
+    // This writes out a string like typed text with two versions. (This one has variable speed and can use a new line conditionally.)
 
     public static void typewrite(int speed, String text, boolean useNewLine) {
         for (char c : text.toCharArray()) {
@@ -70,8 +78,10 @@ public class GameFlow {
         System.out.println("");
     }
 
-    public static final long typeSpeed = 20;
+    // This writes out a string like typed text with two versions. (This is a simple one with a set speed of 20)
+    
     public static void typewrite(String text) {
+    final long typeSpeed = 20;
         for (char c : text.toCharArray()) {
             System.out.print(c);
             System.out.flush();
@@ -85,6 +95,7 @@ public class GameFlow {
         System.out.println("");
     }
 
+    // Main game loop where everything happens
 
     public static void runGameLoop() {
         displayTitle();
@@ -96,12 +107,14 @@ public class GameFlow {
         
     }
 
+    // Initial title display 
     public static void displayTitle() {
         System.out.println("================================");
         System.out.println(ANSI_CYAN + "CHRISTOFER: " + ANSI_PURPLE + "THE RISE OF MARK-HAM" + RESET);
         System.out.printf("\n1. Play\n2. Settings\n\n");
     }
 
+    // Intro for after play confirm
     public static void intro() {
         waitSeconds(1);
         typewrite(ANSI_BLUE + "\nAFTER his fall at the hands of a legendary Moon Warrior, " 
@@ -118,7 +131,7 @@ public class GameFlow {
 
 
     public static void runCharacterCreation() {
-        String name = getStringInput("What is your name?");
+        String name = getStringInput("What is your name?: ");
         Dictionary<String, Integer> stats = new Hashtable<>(); // Life, Anger, Peace, Smartness, Finesse
         stats.put("Life", (Integer)rollRandom(1, 20));
         stats.put("Anger", (Integer)rollRandom(1, 20));
@@ -127,8 +140,9 @@ public class GameFlow {
         stats.put("Finesse", (Integer)rollRandom(1, 20));
 
         ArrayList<Item> items = new ArrayList<>(); // Storage spot for items and weapons
-        items.add(new Weapon(Weapon.returnRandomWeapon()));
-        
+        items.add(new Weapon(Weapon.returnRandom()));
+        items.add(new Item(Item.returnRandom()));
+
         Player player = new Player(name, stats, items);
         
         System.out.println(player.toString());

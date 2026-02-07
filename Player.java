@@ -38,5 +38,5 @@ public class Player {
             GameFlow.ANSI_CYAN + "Smartness: " + GameFlow.ANSI_RESET + stats.get("Smartness") + " " +
             GameFlow.ANSI_GREEN + "Finesse: " + GameFlow.ANSI_RESET + stats.get("Finesse") +
             "\nItems: " + items.toString() + "\n";
-        }   
+    }   
 }

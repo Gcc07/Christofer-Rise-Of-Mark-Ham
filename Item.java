@@ -2,11 +2,15 @@ public class Item {
     protected String name;
     protected String description;
     protected String type;
+    protected float rarity; // IDK if this is going to be implemented
+    protected float dropChance; // IDK if this is going to be implemented
+
     public static String[] itemTypes = {"Consumable", "Key", "Pet"};
     public static String[] itemNames = {"Karim's Homework", "Evan's Homework", "Samosas", "College Deferral", "Tiny Zingbah",
     "Spotted Mushroom", "Withheld Toothbrush", "Worn Football", "Chess Pawn", "Killer Bunny", "FISH!", "Heart Key", "Bomb Key", "Card Key", "Key Key"};
 
     public Item(String name) {
+        this.name = name;
         switch(name) {
             case "Karim's Homework":
                 this.name = name;
@@ -86,13 +90,13 @@ public class Item {
             }
         }
     
-
+    @Override
     public String toString() {
-        return "\n\tItem: " + name + "\n\tDescription: " + description;
+        return "\n\t" + name + " | " + type + "\n\tDescription: " + description + "\n\t";
     }
     
-    public static String returnRandomItem() {
-        int index = (int) (Math.random() * (itemTypes.length));
-        return itemTypes[index];   
+    public static String returnRandom() {
+        int index = (int) (Math.random() * (itemNames.length));
+        return itemNames[index];   
     }
 }
