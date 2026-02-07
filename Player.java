@@ -19,6 +19,7 @@ public class Player {
         this.fleeChance = stats.get("Finesse") * 4;
     }
 
+
     public void takeDamage(int amount) {
         this.currentHP = currentHP - amount;
         if (currentHP < 0) {

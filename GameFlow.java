@@ -20,6 +20,7 @@ public class GameFlow {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String RESET = "\u001B[37m";
     
+    public static ArrayList<Room> Dungeon;
     // Scanner Input methods
 
     private static final Scanner input = new Scanner(System.in);
@@ -104,7 +105,7 @@ public class GameFlow {
             //intro();
             runCharacterCreation();
         }
-        
+        Dungeon = createDungeon(10);
     }
 
     // Initial title display 
@@ -153,5 +154,12 @@ public class GameFlow {
         return stat;
     }
     
+    public static ArrayList<Room> createDungeon(int numOfRooms) {
+        ArrayList<Room> tempDungeon = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            tempDungeon.add(new Room(Room.roomTypes[0], i));
+        }
+        return tempDungeon;
+    }
 }    
     

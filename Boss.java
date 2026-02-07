@@ -4,8 +4,12 @@ public class Boss extends Enemy {
     public static String[] bossNames = {"Rith, the Awakener", "Adamaro, First to Desire", "Amzu, Swarm's Hunger", "Mr. McCuen, Secret Saboteur", "Final Form Gardner"};
     protected Dictionary<String, Integer> enemyStats;
 
-    public Boss(String name) {
-        super(name);
+    /** Boss version of Enemy
+    @param name Name of enemy you are instantiating (use returnRandom for a random boss)
+    @param roomNumber Provide the room number so enemy power properly scales
+    **/
+    public Boss(String name, int roomNumber) {
+        super(name, roomNumber);
         switch (name) {
             case "Rith, the Awakener" :
                 enemyStats.put("Life", 200);

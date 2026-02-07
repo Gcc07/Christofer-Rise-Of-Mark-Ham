@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -132,7 +133,7 @@ public class Weapon extends Item{
     public String toString() {
         String scalingStringValues = "";
         if (scalingType != null && scalingType.size() > 0) { // Making sure there is a actually a scaling type.
-            for (String key : java.util.Collections.list(scalingType.keys())) {
+            for (String key : Collections.list(scalingType.keys())) {
                 Float value = scalingType.get(key);
                 String color = "";
                 switch(key) {
