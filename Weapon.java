@@ -102,7 +102,7 @@ public class Weapon extends Item{
             case "Sam's Dagger":
                 this.damage = 20;
                 this.critChance = 0.5f;
-                this.description = "A dagger of unknown orgin. It has a tag hanging off to the side, proclaiming 'sam'";
+                this.description = "A dagger of unknown orgin. It has a tag hanging off to the side, simply reading 'Sams'";
                 break;
                 
             case "Mr. McCuen's Pearson Piercer":

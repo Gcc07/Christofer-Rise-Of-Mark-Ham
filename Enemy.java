@@ -1,4 +1,5 @@
 import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class Enemy {
     public static String[] enemyNames = {"Goblin", "Chiikawa", "Slime", "Skeleton", "Hell-Pig", "Nantuko"};
@@ -9,6 +10,7 @@ public class Enemy {
     @param roomNumber Provide the room number so enemy power properly scales
     **/
     public Enemy(String name, int roomNumber) {
+        this.enemyStats = new Hashtable<>();
         switch (name) {
             case "Goblin" :
                 enemyStats.put("Life", 200);

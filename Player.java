@@ -2,9 +2,11 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 
 public class Player {
+    protected int level;
     protected boolean isDead = false;
     protected String name;
     protected int currentHP;
+    protected int maximumHP;
     protected int currentMP;
     protected float fleeChance;
     protected Dictionary<String, Integer> stats;
@@ -14,7 +16,8 @@ public class Player {
         this.name = name;
         this.stats = stats; // Life, Anger, Peace, Smartness, Finesse
         this.items = items; // Life, Anger, Peace, Smartness, Finesse
-        this.currentHP = stats.get("Life") * 10; // * 10 to see how much health you have (EX. If you have 10 life stat, you have 100 HP)
+        this.maximumHP = stats.get("Life") * 10; // * 10 to see how much health you have (EX. If you have 10 life stat, you have 100 HP)
+        this.currentHP = maximumHP;
         this.currentMP = 0; // Should be 0 as you start out with 0 Mark Points.
         this.fleeChance = stats.get("Finesse") * 4;
     }
@@ -29,8 +32,8 @@ public class Player {
 
     @Override
     public String toString() {
-        return "\nName: " + name + "\n================================" + 
-            "\nHealth: " + currentHP + 
+        return "\nName: " + name + " | Level: " + level + "\n================================" + 
+            "\nHealth: " + currentHP + " / " + maximumHP +
             "\nMark Points: " + currentMP + 
             "\nStats: " + 
             GameFlow.ANSI_PURPLE + "Life: " + GameFlow.ANSI_RESET + stats.get("Life") + " " +
