@@ -108,7 +108,7 @@ public class Weapon extends Item{
             case "Mr. McCuen's Pearson Piercer":
                 this.damage = 55;
                 this.critChance = 0.11f;
-                this.description = "A terrifying thing. A horrible thing. A thing wielded by a man whom yielded to no-one; yet he could not fight...\nPearson.";
+                this.description = "A terrifying thing. A horrible thing. A thing of unspeakable horrors... Pearson.";
                 break;
                 
             case "Mr. Gardner's Participation Point Piercer":
