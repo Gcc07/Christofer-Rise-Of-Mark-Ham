@@ -103,7 +103,7 @@ public class GameFlow {
         displayTitle();
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
-            displayIntro();
+            //displayIntro();
             runCharacterCreation();
         }
         Dungeon = createDungeon(10);
@@ -158,6 +158,11 @@ public class GameFlow {
 
         Player player = new Player(name, fortune, stats, items);
         
+        typewrite("Intriguing, " + name.split(" ")[0]);
+        waitSeconds(2);
+        typewrite(50, ANSI_BLUE + "Good luck in there.\n" + RESET, true);
+        waitSeconds(2);
+        
         typewrite(1, player.toString(), true);
     }
 
@@ -167,17 +172,40 @@ public class GameFlow {
     }
     
     public static void enterDungeon(ArrayList<Room> Dungeon) {
-        for (Object room : Dungeon) {
-            
+        for (Room room : Dungeon) {
+            typewrite(ANSI_BLUE +  "You have entered room " + room.getRoomNumber() + " of the Ruins of Be'Ta." + RESET);
+            exploreRoom(room);
         }
     }
 
     public static ArrayList<Room> createDungeon(int numOfRooms) {
         ArrayList<Room> tempDungeon = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            tempDungeon.add(new Room(Room.roomTypes[0], i));
+        
+        for (int i = 1; i <= numOfRooms; i++) {
+            if (i == rollRandom(0, numOfRooms)) {
+                tempDungeon.add(new Room("Special", i)); // Add battle room for first floor
+            }
+            if (i == 1) {
+                tempDungeon.add(new Room("Battle", i)); // Add battle room for first floor
+            }
+            else if (i % 10 == 0) {
+                tempDungeon.add(new Room("Boss", i)); // Add boss room for every 10 floors
+            }
+            else if (i % 5 == 0) {
+                tempDungeon.add(new Room("Shop", i)); // Add shop room for every 5 floors
+            }
+            else if (i % 7 == 0) {
+                tempDungeon.add(new Room("Loot", i)); // Add loot room every 7 floors 
+            }
+
+            
         }
         return tempDungeon;
+    }
+
+    public static void exploreRoom(Room room) {
+        typewrite(ANSI_BLUE + room.getDescription() + RESET);
+        typewrite("\n1. Search Room\n3. Approach Enemy\n2. Move To Next Room\n");
     }
 
     public static int getTotalDictionaryValue(Dictionary<String, Integer> dictionary) {
@@ -192,11 +220,13 @@ public class GameFlow {
         typewrite(50, "What is your name?", false);
         String name = getStringInput(": ");
         if (name.isEmpty()) {
-            typewrite("False.");
+            typewrite("At least you know you cannot choose.");
             typewrite("Your name is...");
             waitSeconds(1);
             name = getRandomName();
-            typewrite(10, name, true);
+            waitSeconds(1);
+            typewrite(10, "\n" + ANSI_YELLOW + name + RESET + "\n", true);
+            waitSeconds(1);
             return name;
         }
         else {
@@ -205,7 +235,8 @@ public class GameFlow {
             typewrite("Not here, ");
             waitSeconds(1);
             name = getRandomName();
-            typewrite(10, name, true);
+            typewrite(10, "\n" + ANSI_YELLOW + name + RESET + "\n", true);
+            waitSeconds(1);
             return name;
         }
     }

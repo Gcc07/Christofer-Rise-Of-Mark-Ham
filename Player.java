@@ -33,22 +33,22 @@ public class Player {
     }
     // I haven't implemented functionality for player fortune just yet. It's simply a reflection of how lucky you got with rolls.
     public static String getPlayerFortune(int startingStatTotal) {
-        if (startingStatTotal <= 8) {        // Bottom ~5% (5-8)
+        if (startingStatTotal <= 35) {     
             return GameFlow.ANSI_BLACK + "Accursed" + GameFlow.RESET;
         }
-        if (startingStatTotal <= 15) {       // Next ~10% (9-15)
+        if (startingStatTotal <= 48) {     
             return GameFlow.ANSI_RED + "Tormented" + GameFlow.RESET;
         }
-        else if (startingStatTotal <= 35) { // Middle ~40% (16-35)
+        else if (startingStatTotal <= 58) { 
             return GameFlow.ANSI_YELLOW + "Unremarkable" + GameFlow.RESET;
         }
-        else if (startingStatTotal <= 50) { // Next ~30% (36-50)
+        else if (startingStatTotal <= 74) { 
             return GameFlow.ANSI_GREEN + "Favored" + GameFlow.RESET;
         }
-        else if (startingStatTotal <= 65) { // Next ~20% (51-65)
+        else if (startingStatTotal <= 85) { 
             return GameFlow.ANSI_BLUE + "Blessed" + GameFlow.RESET;
         }
-        else {                                // Top ~5% (66-75)
+        else {                               
             return GameFlow.ANSI_CYAN + "Moon-Blessed" + GameFlow.RESET;
         }
     }
