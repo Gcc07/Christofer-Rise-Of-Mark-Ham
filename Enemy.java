@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.Dictionary;
-import java.util.Hashtable;
 
 public class Enemy {
     public static String[] enemyNames = {"Goblin", "Chiikawa", "Slime", "Skeleton", "Hell-Pig", "Nantuko"};
@@ -26,7 +24,6 @@ public class Enemy {
         }
 
     }
-
     public static String returnRandomEnemy(int roomNum) { // Returns a random enemy name from the nameChoices list
         int index = (int) (Math.random() * (enemyNames.length));
         if (roomNum % 3 == 0){

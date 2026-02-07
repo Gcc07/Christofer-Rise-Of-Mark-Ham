@@ -88,7 +88,7 @@ public class Item {
     
 
     public String toString() {
-        return "\nItem: " + name + "\nDescription: " + description;
+        return "\n\tItem: " + name + "\n\tDescription: " + description;
     }
     
     public static String returnRandomItem() {

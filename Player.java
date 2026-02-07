@@ -28,6 +28,15 @@ public class Player {
 
     @Override
     public String toString() {
-        return "\nName: " + name + "\nStats: " + stats.toString() + "\n" + "Items: " + items.toString() + "\n" ;
-    }
+        return "\nName: " + name + "\n================================" + 
+            "\nHealth: " + currentHP + 
+            "\nMark Points: " + currentMP + 
+            "\nStats: " + 
+            GameFlow.ANSI_PURPLE + "Life: " + GameFlow.ANSI_RESET + stats.get("Life") + " " +
+            GameFlow.ANSI_RED + "Anger: " + GameFlow.ANSI_RESET + stats.get("Anger") + " " +
+            GameFlow.ANSI_YELLOW + "Peace: " + GameFlow.ANSI_RESET + stats.get("Peace") + " " +
+            GameFlow.ANSI_CYAN + "Smartness: " + GameFlow.ANSI_RESET + stats.get("Smartness") + " " +
+            GameFlow.ANSI_GREEN + "Finesse: " + GameFlow.ANSI_RESET + stats.get("Finesse") +
+            "\nItems: " + items.toString() + "\n";
+        }   
 }

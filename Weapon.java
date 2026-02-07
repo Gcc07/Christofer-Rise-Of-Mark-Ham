@@ -1,9 +1,27 @@
+import java.util.Dictionary;
+
 public class Weapon extends Item{
-    protected int damage;
     protected String prefix;
+    protected float damage;
     protected float critChance; // IDK if this is going to be implemented
     protected float dropChance; // IDK if this is going to be implemented
-    public static String[] nameChoices = {"N's Odachi of the East", "Cursed Mouse", "Evan's Great Mace of Destruction", "Maxwell's Spear of the Enraged", "Sixsev-un-chucks of Troy"};
+    protected Dictionary<String, Float> scalingType;
+
+    public static String[] nameChoices = {
+    "N's Odachi of the East", 
+    "Cursed Mouse", 
+    "Evan's Great Mace of Destruction", 
+    "Maxwell's Spear of the Enraged", 
+    "Sixsev-UN-chucks of Troy",
+    "Karan's Quiet Rapier",
+    "Phil's 'sticks",
+    "Katars of Humanity",
+    "Unicycle",
+    "Gahaurtana",
+    "Sam's Dagger",
+    "Mr. McCuen's Pearson Piercer",
+    "Mr. Gardner's Participation Point Piercer"
+    };
     public Weapon(String name) { 
         super(name);
         this.name = name;
