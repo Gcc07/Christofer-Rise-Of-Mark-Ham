@@ -416,7 +416,7 @@ public class GameFlow {
                 switch (fightDecision) {
                     case 1:
                         int playerDamageDealt = getPlayerDamage(player);
-                        typewrite(player.getName() + " attacked " + enemy.getName() + "with" player.getEquippedWeapon());
+                        typewrite(player.getName() + " attacked " + enemy.getName() + "with" + player.getEquippedWeapon() + " for " + playerDamageDealt);
                     case 2:
                     default:
                     break;
