@@ -13,19 +13,23 @@ public class Player {
     protected float encounterChance;
     protected Dictionary<String, Integer> stats;
     protected ArrayList<Item> items;
+    protected Weapon equippedWeapon;
     
     public Player(String name, String fortune, Dictionary<String, Integer> stats, ArrayList<Item> items) {
         this.name = name;
         this.fortune = fortune;
         this.stats = stats; // Life, Anger, Peace, Smartness, Finesse
         this.items = items; // Life, Anger, Peace, Smartness, Finesse
-        this.maximumHP = stats.get("Life") * 10; // * 10 to see how much health you have (EX. If you have 10 life stat, you have 100 HP)
+        this.maximumHP = 50 + stats.get("Life") * 10; // 50 + Life multiplied 10 to see how much health you have (EX. If you have 10 life stat, you have 150 HP)
         this.currentHP = maximumHP;
         this.currentMP = 0; // Should be 0 as you start out with 0 Mark Points.
         this.fleeChance = stats.get("Finesse") * .04f; // at 25 finesse you have a 100% escape chance
+        this.equippedWeapon = (Weapon)items.get(0); // Relies on weapon being first thing in inventory
         this.encounterChance = .5f // 50% encounter chance
         - (stats.get("Finesse") * .01f) // -.01 chance for each Finesse,
-        + (stats.get("Anger") * .01f); // +.01 chance for each Anger.
+        - (stats.get("Peace") * .005f) // -.005 chance for each Peace,
+        - (stats.get("Smartness") * .005f) // -.005 chance for each Smartness,
+        + (stats.get("Anger") * .015f); // +.01 chance for each Anger.
     }
 
     public void addItemToInventory(Item item) {
@@ -66,6 +70,26 @@ public class Player {
 
     public float getEncounterChance() {
         return encounterChance;
+    }
+
+    public ArrayList<Item> getInventory() {
+        return items;
+    }
+
+    public String getName() { 
+        return name;
+    }
+
+    public void useItem(Item item) {
+        
+    }
+
+    public Weapon getEquippedWeapon() {
+        return equippedWeapon;
+    }
+
+    public void applyEffect() {
+
     }
 
     @Override

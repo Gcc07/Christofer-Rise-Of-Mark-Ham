@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 public class Room {
-    protected final int enemyMinAmount = 2; // Maybe change with diffuculty?
     public static String[] roomTypes = {"Loot", "Battle", "Shop", "Boss", "Special"};
     protected int roomNumber;
     protected String type;
@@ -10,6 +9,8 @@ public class Room {
     protected int amountOfEnemies = 0;
     protected int minimumNumOfItems = 0;
     protected int maximumNumOfItems = 0;
+    protected int minimumNumOfEnemies = 0;
+    protected int maximumNumOfEnemies = 0;
     protected ArrayList<Item> roomItems;
     protected ArrayList<Enemy> roomEnemies;
     
@@ -23,23 +24,29 @@ public class Room {
         switch(type) {
 
             case "Loot":
-                this.minimumNumOfItems = 3;
-                this.maximumNumOfItems = calculateMaxItems(5); // 5 items minus the room number * .2 (Less items the further you go)
-                this.amountOfItems = GameFlow.rollRandom(minimumNumOfItems, maximumNumOfItems);
+                this.description = "Salvagable goods appear intermittently. It seems like there aren't any hostiles nearby...";
 
-                this.description = "A room full of loot. It seems like there aren't any hostiles nearby...";
+                this.minimumNumOfItems = 3;
+                this.maximumNumOfItems = calculateMaxItems(4); // 5 items minus the room number * .2 (Less items the further you go)
+                this.amountOfItems = GameFlow.rollRandom(minimumNumOfItems, maximumNumOfItems);
                 for (int i = 0; i < amountOfItems; i++) {
                     roomItems.add(new Item(Item.returnRandom()));
                 }
                 break;
     
             case "Battle":
-                this.minimumNumOfItems = 0;
-                this.maximumNumOfItems = calculateMaxItems(2); // 5 items minus the room number * .2 (Less items the further you go)
-                this.amountOfItems = GameFlow.rollRandom(minimumNumOfItems, maximumNumOfItems);
-                
                 this.description = "You see enemies lurking around each corner... maybe it's best to approach them first; they might ambush you.";
-                amountOfEnemies = GameFlow.rollRandom(enemyMinAmount, calculateMaxEnemies()); // Get the amount of enemies in the room.
+
+                this.minimumNumOfItems = 0;
+                this.maximumNumOfItems = calculateMaxItems(3); // 5 items minus the room number * .2 (Less items the further you go)
+                this.amountOfItems = GameFlow.rollRandom(minimumNumOfItems, maximumNumOfItems);
+                for (int i = 1; i < amountOfItems; i++) {
+                    roomItems.add(new Item(Item.returnRandom()));
+                }
+                
+                this.minimumNumOfEnemies = 2;
+                this.maximumNumOfEnemies = calculateMaxEnemies();
+                amountOfEnemies = GameFlow.rollRandom(minimumNumOfEnemies, maximumNumOfEnemies); // Get the amount of enemies in the room.
                 for (int i = 0; i < amountOfEnemies; i++) {
                     roomEnemies.add(new Enemy(Enemy.returnRandom(), roomNumber));
                 }
@@ -89,6 +96,10 @@ public class Room {
 
     public int getRoomNumber() {
         return roomNumber;
+    }
+
+    public String getRoomType() {
+        return type;
     }
 
     public ArrayList<Item> getItems() {

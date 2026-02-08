@@ -34,7 +34,7 @@ public class GameFlow {
             input.nextLine(); // Consume the leftover newline
             return value;
         } catch (Exception e) {
-            System.out.println("This is an invalid input. Try again.");
+            System.out.println("\nInvalid Input. Try again.");
             input.nextLine();
             return getIntInput(prompt);
         }
@@ -44,7 +44,7 @@ public class GameFlow {
         try {
             return input.nextLine();
         } catch (Exception e) {
-            System.out.println("This is an invalid input. Try again.");
+            System.out.println("\\nInvalid Input. Try again.");
             input.nextLine();
             return getStringInput(prompt);
         }
@@ -127,12 +127,17 @@ public class GameFlow {
                 displayInGameOptions(room, player);
                 break;
             case 2:
-                // Item Use Code
+
+                for (int i = 0; i < player.getInventory().size(); i++) {
+                    System.out.print("\n\t" + (i + 1) + ".) ");
+                    typewrite(player.getInventory().get(i).toString());
+                }
+                playerDecision = getIntInput("Select an Item to use: ");
+                player.useItem(player.getInventory().get(playerDecision));
             case 3:
                 //TODO Information codex
 
             case 4: 
-                typewrite("\n");
                 break;
 
             default:
@@ -189,9 +194,9 @@ public class GameFlow {
 
         Player player = new Player(name, fortune, stats, items);
         
-        typewrite("Intriguing, " + name.split(" ")[0]);
+        typewrite(ANSI_BLUE + "Intriguing, " + name.split(" ")[0]);
         waitSeconds(1);
-        typewrite(50, ANSI_BLUE + "Good luck in there." + RESET, true);
+        typewrite(50,  "Good luck in there." + RESET, true);
         waitSeconds(1);
         
         typewrite(1, player.toString(), true);
@@ -248,27 +253,28 @@ public class GameFlow {
 
     public static void exploreRoom(Room room, Player player) {
         typewrite(ANSI_BLUE + room.getDescription() + RESET);
-        typewrite("\n1. Search Room\n2. Approach Enemy\n3. Move To Next Room\n" + ANSI_BLACK + "4. Menu\n" + RESET);
+        typewrite(5, "\n1. Search Room\n2. Approach Enemy\n3. Move To Next Room\n" + ANSI_BLACK + "4. Menu\n" + RESET, false);
         int playerDecision = getIntInput("\nInput: ");
         switch (playerDecision) {
             
-            case 1:
-                System.out.println(room.getItems());
+            case 1: // If the player wants to search the room, they have a chance of being ambushed. (encounterChance)
+                System.out.println(room.getEnemies());
                 float encounterChance = rollRandomFloat();
                 if (encounterChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
                     System.out.println("ENCOUNTER CHANCE: " + encounterChance + " | PLAYER %: " + player.getEncounterChance());
                     Enemy foundEnemy = room.selectRandomEnemy();
-                    typewrite("You search the room");
+                    typewrite(ANSI_BLUE + "You search the room");
                     waitSeconds(1);
                     typewrite(150, "...", true);
                     waitSeconds(1);
                     typewrite(200, "...", true);
                     waitSeconds(2);
-                    typewrite("Whilst searching, you were ambushed!");
+                    typewrite(ANSI_RED + "Whilst searching, you were ambushed!" + RESET);
                     battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
                 } 
                 else {
-                    typewrite("You search the room");
+                    System.out.println(room.getItems());
+                    typewrite(ANSI_BLUE + "You search the room");
                     waitSeconds(1);
                     typewrite(150, "...", true);
                     waitSeconds(1);
@@ -277,11 +283,11 @@ public class GameFlow {
                     if (!room.getItems().isEmpty()) {
                         Item foundItem = room.takeRandomItem();
                         player.addItemToInventory(foundItem);
-                        typewrite("You found a " + foundItem.getName() + "!\n");
+                        typewrite("You found a " + ANSI_YELLOW + foundItem.getName() + "!\n" + RESET);
                         waitSeconds(1);
                     }
                     else {
-                        typewrite("... But found nothing.\n");
+                        typewrite("... But found nothing.\n" + RESET);
                         waitSeconds(1);
                     }
                 }
@@ -291,7 +297,7 @@ public class GameFlow {
             case 2:   
                 if (!room.getEnemies().isEmpty()) {
                     Enemy foundEnemy = room.selectRandomEnemy();
-                    typewrite("You approach " + foundEnemy.getName() + ".\n");
+                    typewrite(ANSI_BLUE + "\nYou approach " + ANSI_RED + foundEnemy.getName() + ".\n" + RESET);
                     battle(player, foundEnemy);
                     //Then once battle is over, resume roomtivities.
                 }
@@ -305,21 +311,21 @@ public class GameFlow {
                 float nextRoomChance = rollRandomFloat();
                 if (nextRoomChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
                     Enemy foundEnemy = room.selectRandomEnemy();
-                    typewrite(ANSI_BLUE + "You attempt to move rooms" + RESET);
+                    typewrite(ANSI_BLUE + "\nYou attempt to move rooms");
                     waitSeconds(1);
                     typewrite(150, "...", true);
                     waitSeconds(1);
                     typewrite(200, "...", true);
                     waitSeconds(2);
-                    typewrite("Enemies block your way!");
+                    typewrite(ANSI_RED + "Enemies block your way!" + RESET);
                     battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
                     typewrite("With the enemy dead, you tread on. \n");
                     break;
                 } 
                 else {
-                    typewrite("You attempt to move rooms");
+                    typewrite(ANSI_BLUE + "\nYou attempt to move rooms");
                     waitSeconds(1);
-                    typewrite(200, "...", true);
+                    typewrite(200, "..." + RESET, true);
                     waitSeconds(2);
                     break;
                 }
@@ -329,6 +335,7 @@ public class GameFlow {
                 exploreRoom(room, player);
                 break;
             default:
+                typewrite("\n");
                 exploreRoom(room, player);
                 break;
         }
@@ -378,7 +385,7 @@ public class GameFlow {
         };
         String[] lastNames = {
             "Kardeenis", "Muhrgi", "Gard-nare", "Zefah", "Mikyuin",
-            "Ptahtell", "Tapel", "Violence", "Thorntin", "Gojo",
+            "Ptahtell", "Tepesh", "Violence", "Thorntin", "Gojo",
             "Thun", "Jack", "Dubmin", "Thitay", "Kal-Fust",
             "Frost", "Oobah", "Bah", "Starless", "Moon",
             "Java", "Stone", "Windowspider", "Midterm", "Final",
@@ -388,9 +395,44 @@ public class GameFlow {
         return firstNames[fIndex] + " " + lastNames[lIndex];
     }
 
-    public static void battle(Player player, Enemy enemy) {
-        //PLACEHOLDER FOR BATTLE LOGIC
-        typewrite("Blah blah Player wins!!!\n");
+    public static void moveDown() {
+        for (int i = 0; i < 20; i++) {
+            typewrite("\n");
+        }
     }
+    public static void battle(Player player, Enemy enemy) {
+        waitSeconds(1);
+        moveDown();
+        typewrite(ANSI_BLUE + enemy.getDescription() + RESET);
+
+
+        typewrite(5, "\n1. Attack\n2. Use Item\n3. Inspect " + enemy.getName() + "\n" + ANSI_BLACK + "4. Flee\n" + RESET, false);
+        int playerDecision = getIntInput("\nInput: ");
+        switch (playerDecision) { 
+
+            case 1: // Attack
+                typewrite(5, "\n1. Use" + player.getEquippedWeapon() + "\n2. Use Moonblessing\n" + ANSI_BLACK + "3. Return" + RESET, false);
+                int fightDecision = getIntInput("\nInput: ");
+                switch (fightDecision) {
+                    case 1:
+                        int playerDamageDealt = getPlayerDamage(player);
+                        typewrite(player.getName() + " attacked " + enemy.getName() + "with" player.getEquippedWeapon());
+                    case 2:
+                    default:
+                    break;
+                }
+            case 2: //TODO Use Item
+            case 3: //TODO Study Enemy
+            case 4: //TODO Attempt Flee
+            default:
+                break;
+        }
+        
+        
+    }
+    public static int getPlayerDamage(Player player) {
+        return 4;
+    }
+    
 }    
     
