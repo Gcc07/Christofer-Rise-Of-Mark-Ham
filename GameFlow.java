@@ -118,23 +118,25 @@ public class GameFlow {
 
     public static void displayInGameOptions(Room room, Player player) {
         typewrite("\nMENU\n----");
-        typewrite("\n1. Check Self\n2. Information Codex\n" + ANSI_BLACK + "3. Return\n"+ ANSI_RED + "4. Exit\n" + RESET);
-        int playerDecision = getIntInput("\nInput: ");
+        typewrite("\n1. Check Self\n2. Use Item\n3. Information Codex\n" + ANSI_BLACK + "4. Return\n"+ ANSI_RED + "5. Exit\n" + RESET);
+        int playerDecision = getIntInput("Input: ");
         switch (playerDecision) {
             case 1:
                 typewrite(1, player.toString(), true);
-                getStringInput("\nPress enter to continue: ");
+                getStringInput("Press enter to continue: ");
                 displayInGameOptions(room, player);
                 break;
-
             case 2:
+                // Item Use Code
+            case 3:
                 //TODO Information codex
 
-            case 3: 
+            case 4: 
+                typewrite("\n");
                 break;
 
             default:
-                displayInGameOptions(room, player);
+                runGameLoop();
                 break;
         }
         
@@ -188,11 +190,12 @@ public class GameFlow {
         Player player = new Player(name, fortune, stats, items);
         
         typewrite("Intriguing, " + name.split(" ")[0]);
-        waitSeconds(2);
+        waitSeconds(1);
         typewrite(50, ANSI_BLUE + "Good luck in there." + RESET, true);
-        waitSeconds(2);
+        waitSeconds(1);
         
         typewrite(1, player.toString(), true);
+        getStringInput("Press enter to continue: ");
         return player;
     }
 
@@ -208,7 +211,7 @@ public class GameFlow {
     
     public static void enterDungeon(ArrayList<Room> Dungeon, Player player) {
         for (Room room : Dungeon) {
-            typewrite(ANSI_BLUE +  "You have entered room " + room.getRoomNumber() + " of the Ruins of Be'Ta." + RESET);
+            typewrite(ANSI_BLUE +  "\nYou have entered room " + room.getRoomNumber() + " of the Ruins of Be'Ta." + RESET);
             exploreRoom(room, player);
         }
     }
@@ -220,8 +223,11 @@ public class GameFlow {
             if (i == rollRandom(1, numOfRooms)) {
                 tempDungeon.add(new Room("Special", i)); // Add special room for the dungeon size
             }
-            if (i == 1) {
+            else if (i == 1) {
                 tempDungeon.add(new Room("Battle", i)); // Add battle room for first floor
+            }
+            else if (i == 3) {
+                tempDungeon.add(new Room("Loot", i)); // add loot room for third floor (so player understands what it is.)
             }
             else if (i % 10 == 0) {
                 tempDungeon.add(new Room("Boss", i)); // Add boss room for every 10 floors
@@ -247,8 +253,10 @@ public class GameFlow {
         switch (playerDecision) {
             
             case 1:
+                System.out.println(room.getItems());
                 float encounterChance = rollRandomFloat();
                 if (encounterChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
+                    System.out.println("ENCOUNTER CHANCE: " + encounterChance + " | PLAYER %: " + player.getEncounterChance());
                     Enemy foundEnemy = room.selectRandomEnemy();
                     typewrite("You search the room");
                     waitSeconds(1);
@@ -269,43 +277,52 @@ public class GameFlow {
                     if (!room.getItems().isEmpty()) {
                         Item foundItem = room.takeRandomItem();
                         player.addItemToInventory(foundItem);
-                        typewrite("You found a " + foundItem.getName() + "!");
+                        typewrite("You found a " + foundItem.getName() + "!\n");
                         waitSeconds(1);
-                        exploreRoom(room, player);
                     }
                     else {
                         typewrite("... But found nothing.\n");
                         waitSeconds(1);
-                        exploreRoom(room, player);
                     }
                 }
+                exploreRoom(room, player);
                 break;
 
             case 2:   
                 if (!room.getEnemies().isEmpty()) {
                     Enemy foundEnemy = room.selectRandomEnemy();
+                    typewrite("You approach " + foundEnemy.getName() + ".\n");
                     battle(player, foundEnemy);
-
-                    exploreRoom(room, player);
+                    //Then once battle is over, resume roomtivities.
                 }
                 else {
-                    typewrite("There is nobody to approach.");
+                    typewrite(ANSI_BLUE + "\nThere is nobody to approach.\n" + RESET);
                 }
+                exploreRoom(room, player);
                 break;
 
             case 3:
                 float nextRoomChance = rollRandomFloat();
                 if (nextRoomChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
-
                     Enemy foundEnemy = room.selectRandomEnemy();
+                    typewrite(ANSI_BLUE + "You attempt to move rooms" + RESET);
+                    waitSeconds(1);
+                    typewrite(150, "...", true);
+                    waitSeconds(1);
+                    typewrite(200, "...", true);
+                    waitSeconds(2);
+                    typewrite("Enemies block your way!");
                     battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
-
-                    exploreRoom(room, player);
+                    typewrite("With the enemy dead, you tread on. \n");
+                    break;
                 } 
                 else {
+                    typewrite("You attempt to move rooms");
+                    waitSeconds(1);
+                    typewrite(200, "...", true);
+                    waitSeconds(2);
                     break;
                 }
-                break;
 
             case 4:
                 displayInGameOptions(room, player);
