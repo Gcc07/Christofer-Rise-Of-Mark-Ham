@@ -1,4 +1,5 @@
 import java.util.Dictionary;
+import java.util.Hashtable;
 
 public class Boss extends Enemy {
     public static String[] bossNames = {"Rith, the Awakener", "Adamaro, First to Desire", "Amzu, Swarm's Hunger", "Mr. McCuen, Secret Saboteur", "Final Form Gardner"};
@@ -10,6 +11,7 @@ public class Boss extends Enemy {
     **/
     public Boss(String name, int roomNumber) {
         super(name, roomNumber);
+        this.enemyStats = new Hashtable<>();
         switch (name) {
             case "Rith, the Awakener" :
                 enemyStats.put("Life", 200);

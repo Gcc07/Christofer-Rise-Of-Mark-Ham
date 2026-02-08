@@ -10,6 +10,7 @@ public class Player {
     protected int maximumHP;
     protected int currentMP;
     protected float fleeChance;
+    protected float encounterChance;
     protected Dictionary<String, Integer> stats;
     protected ArrayList<Item> items;
     
@@ -21,9 +22,15 @@ public class Player {
         this.maximumHP = stats.get("Life") * 10; // * 10 to see how much health you have (EX. If you have 10 life stat, you have 100 HP)
         this.currentHP = maximumHP;
         this.currentMP = 0; // Should be 0 as you start out with 0 Mark Points.
-        this.fleeChance = stats.get("Finesse") * 4;
+        this.fleeChance = stats.get("Finesse") * .04f; // at 25 finesse you have a 100% escape chance
+        this.encounterChance = .5f // 50% encounter chance
+        - (stats.get("Finesse") * .01f) // -.01 chance for each Finesse,
+        + (stats.get("Anger") * .01f); // +.01 chance for each Anger.
     }
 
+    public void addItemToInventory(Item item) {
+        items.add(item);
+    }
 
     public void takeDamage(int amount) {
         this.currentHP = currentHP - amount;
@@ -53,6 +60,14 @@ public class Player {
         }
     }
 
+    public Dictionary<String, Integer> getStats() {
+        return stats;
+    }
+
+    public float getEncounterChance() {
+        return encounterChance;
+    }
+
     @Override
     public String toString() {
         return "\nName: " + name + " | Level: " + level + " | Fortune: " + fortune + "\n================================" + 
@@ -64,6 +79,6 @@ public class Player {
             GameFlow.ANSI_YELLOW + "Peace: " + GameFlow.ANSI_RESET + stats.get("Peace") + " " +
             GameFlow.ANSI_CYAN + "Smartness: " + GameFlow.ANSI_RESET + stats.get("Smartness") + " " +
             GameFlow.ANSI_GREEN + "Finesse: " + GameFlow.ANSI_RESET + stats.get("Finesse") +
-            "\nItems: " + items.toString() + "\n";
+            "\nItems: " + items.toString() + "\n================================\n";
     }   
 }

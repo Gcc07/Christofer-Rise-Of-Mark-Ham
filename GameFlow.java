@@ -21,7 +21,9 @@ public class GameFlow {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String RESET = "\u001B[37m";
     
-    public static ArrayList<Room> Dungeon;
+    public static Player player;
+    public static ArrayList<Room> dungeon;
+
     // Scanner Input methods
 
     private static final Scanner input = new Scanner(System.in);
@@ -104,12 +106,39 @@ public class GameFlow {
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
             //displayIntro();
-            runCharacterCreation();
+            player = runCharacterCreation();
         }
-        Dungeon = createDungeon(10);
-        enterDungeon(Dungeon);
+        dungeon = createDungeon(30);
+        enterDungeon(dungeon, player);
     }
 
+    public static void displaySettings() {
+        // COMPLETE SETTINGS
+    }
+
+    public static void displayInGameOptions(Room room, Player player) {
+        typewrite("\nMENU\n----");
+        typewrite("\n1. Check Self\n2. Information Codex\n" + ANSI_BLACK + "3. Return\n"+ ANSI_RED + "4. Exit\n" + RESET);
+        int playerDecision = getIntInput("\nInput: ");
+        switch (playerDecision) {
+            case 1:
+                typewrite(1, player.toString(), true);
+                getStringInput("\nPress enter to continue: ");
+                displayInGameOptions(room, player);
+                break;
+
+            case 2:
+                //TODO Information codex
+
+            case 3: 
+                break;
+
+            default:
+                displayInGameOptions(room, player);
+                break;
+        }
+        
+    }
     // Initial title display 
     public static void displayTitle() {
         System.out.println("================================");
@@ -140,7 +169,7 @@ public class GameFlow {
     }
 
 
-    public static void runCharacterCreation() {
+    public static Player runCharacterCreation() {
         String name = getNameSequence();
 
         Dictionary<String, Integer> stats = new Hashtable<>(); // PLAYER STATS: Life, Anger, Peace, Smartness, Finesse (Adding them to the stats Dictionary)
@@ -160,21 +189,27 @@ public class GameFlow {
         
         typewrite("Intriguing, " + name.split(" ")[0]);
         waitSeconds(2);
-        typewrite(50, ANSI_BLUE + "Good luck in there.\n" + RESET, true);
+        typewrite(50, ANSI_BLUE + "Good luck in there." + RESET, true);
         waitSeconds(2);
         
         typewrite(1, player.toString(), true);
+        return player;
     }
 
     public static int rollRandom(int min, int max) {
         int stat = (int) (Math.random() * (max - min + 1) + min);
         return stat;
     }
+
+    public static float rollRandomFloat() {
+        float stat = (float)(Math.random());
+        return stat;
+    }
     
-    public static void enterDungeon(ArrayList<Room> Dungeon) {
+    public static void enterDungeon(ArrayList<Room> Dungeon, Player player) {
         for (Room room : Dungeon) {
             typewrite(ANSI_BLUE +  "You have entered room " + room.getRoomNumber() + " of the Ruins of Be'Ta." + RESET);
-            exploreRoom(room);
+            exploreRoom(room, player);
         }
     }
 
@@ -182,8 +217,8 @@ public class GameFlow {
         ArrayList<Room> tempDungeon = new ArrayList<>();
         
         for (int i = 1; i <= numOfRooms; i++) {
-            if (i == rollRandom(0, numOfRooms)) {
-                tempDungeon.add(new Room("Special", i)); // Add battle room for first floor
+            if (i == rollRandom(1, numOfRooms)) {
+                tempDungeon.add(new Room("Special", i)); // Add special room for the dungeon size
             }
             if (i == 1) {
                 tempDungeon.add(new Room("Battle", i)); // Add battle room for first floor
@@ -197,15 +232,89 @@ public class GameFlow {
             else if (i % 7 == 0) {
                 tempDungeon.add(new Room("Loot", i)); // Add loot room every 7 floors 
             }
-
+            else {
+                tempDungeon.add(new Room("Battle", i)); // Add battle room for any other room
+            }
             
         }
         return tempDungeon;
     }
 
-    public static void exploreRoom(Room room) {
+    public static void exploreRoom(Room room, Player player) {
         typewrite(ANSI_BLUE + room.getDescription() + RESET);
-        typewrite("\n1. Search Room\n3. Approach Enemy\n2. Move To Next Room\n");
+        typewrite("\n1. Search Room\n2. Approach Enemy\n3. Move To Next Room\n" + ANSI_BLACK + "4. Menu\n" + RESET);
+        int playerDecision = getIntInput("\nInput: ");
+        switch (playerDecision) {
+            
+            case 1:
+                float encounterChance = rollRandomFloat();
+                if (encounterChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
+                    Enemy foundEnemy = room.selectRandomEnemy();
+                    typewrite("You search the room");
+                    waitSeconds(1);
+                    typewrite(150, "...", true);
+                    waitSeconds(1);
+                    typewrite(200, "...", true);
+                    waitSeconds(2);
+                    typewrite("Whilst searching, you were ambushed!");
+                    battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
+                } 
+                else {
+                    typewrite("You search the room");
+                    waitSeconds(1);
+                    typewrite(150, "...", true);
+                    waitSeconds(1);
+                    typewrite(200, "...", true);
+                    waitSeconds(2);
+                    if (!room.getItems().isEmpty()) {
+                        Item foundItem = room.takeRandomItem();
+                        player.addItemToInventory(foundItem);
+                        typewrite("You found a " + foundItem.getName() + "!");
+                        waitSeconds(1);
+                        exploreRoom(room, player);
+                    }
+                    else {
+                        typewrite("... But found nothing.\n");
+                        waitSeconds(1);
+                        exploreRoom(room, player);
+                    }
+                }
+                break;
+
+            case 2:   
+                if (!room.getEnemies().isEmpty()) {
+                    Enemy foundEnemy = room.selectRandomEnemy();
+                    battle(player, foundEnemy);
+
+                    exploreRoom(room, player);
+                }
+                else {
+                    typewrite("There is nobody to approach.");
+                }
+                break;
+
+            case 3:
+                float nextRoomChance = rollRandomFloat();
+                if (nextRoomChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
+
+                    Enemy foundEnemy = room.selectRandomEnemy();
+                    battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
+
+                    exploreRoom(room, player);
+                } 
+                else {
+                    break;
+                }
+                break;
+
+            case 4:
+                displayInGameOptions(room, player);
+                exploreRoom(room, player);
+                break;
+            default:
+                exploreRoom(room, player);
+                break;
+        }
     }
 
     public static int getTotalDictionaryValue(Dictionary<String, Integer> dictionary) {
@@ -260,6 +369,11 @@ public class GameFlow {
         int fIndex = (int) (Math.random() * (firstNames.length));
         int lIndex = (int) (Math.random() * (lastNames.length));
         return firstNames[fIndex] + " " + lastNames[lIndex];
+    }
+
+    public static void battle(Player player, Enemy enemy) {
+        //PLACEHOLDER FOR BATTLE LOGIC
+        typewrite("Blah blah Player wins!!!\n");
     }
 }    
     

@@ -95,6 +95,9 @@ public class Item {
         return "\n\t" + name + " | " + type + "\n\tDescription: " + description + "\n\t";
     }
     
+    public String getName() {
+        return name;
+    }
     public static String returnRandom() {
         int index = (int) (Math.random() * (itemNames.length));
         return itemNames[index];   
