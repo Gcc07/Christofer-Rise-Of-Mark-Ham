@@ -21,6 +21,9 @@ public class GameFlow {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String RESET = "\u001B[37m";
+
+    public static long typeSpeed = 20;
+    public static boolean useIntro = true;
     
     public static boolean gameOver = false;
 
@@ -100,7 +103,6 @@ public class GameFlow {
     // This writes out a string like typed text with two versions. (This is a simple one with a set speed of 20)
     
     public static void typewrite(String text) {
-    final long typeSpeed = 20;
         for (char c : text.toCharArray()) {
             System.out.print(c);
             System.out.flush();
@@ -120,8 +122,16 @@ public class GameFlow {
         displayTitle();
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
+<<<<<<< HEAD
             displayIntro();
+=======
+            if (useIntro) {
+                displayIntro();
+            }
+>>>>>>> 940e1cfa3cfe5684c43667d120a05a71e71b518b
             player = runCharacterCreation();
+        } else if (playerDecision == 2) {
+            displaySettings();
         }
         dungeon = createDungeon(30);
         enterDungeon(dungeon, player);
@@ -129,6 +139,21 @@ public class GameFlow {
 
     public static void displaySettings() {
         // COMPLETE SETTINGS
+        System.out.println("================================");
+        System.out.println(ANSI_CYAN + "CHRISTOFER: " + ANSI_PURPLE + "THE RISE OF MARK-HAM" + RESET);
+        System.out.printf("\n1. Set standard typewrite speed (current speed: " + typeSpeed + ")\n2. Toggle introduction before gameplay (using intro: " + useIntro + ")\n3. Back to home\n\n");
+        int playerDecision = getIntInput("Input: ");
+        switch(playerDecision) {
+            case 1:
+                typeSpeed = getIntInput("\nEnter new type speed: " + ANSI_GREEN);
+                displaySettings();
+            case 2:
+                useIntro = !useIntro;
+                displaySettings();
+            default:
+                runGameLoop();
+        }
+
     }
 
     public static void displayInGameOptions(Room room, Player player) {
@@ -692,5 +717,4 @@ public class GameFlow {
         return multipler;
     }
 
-}    
-    
+}
