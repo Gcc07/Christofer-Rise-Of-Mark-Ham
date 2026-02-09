@@ -22,9 +22,9 @@ public class Weapon extends Item{
     "Katars of Humanity",
     "Unicycle",
     "Gahaurtana",
-    "Sam's Dagger",
-    "Mr. McCuen's Pearson Piercer",
-    "Mr. Gardner's Participation Point Piercer"
+    "Sam's Dagger"
+    //"Mr. McCuen's Pearson Piercer", : Don't get this randomly
+    //"Mr. Gardner's Participation Point Piercer": Don't get this randomly
     };
     public Weapon(String name) { 
         super(name);

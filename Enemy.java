@@ -45,7 +45,7 @@ public class Enemy {
                 this.damage = 20;
                 break;
             case "Chiikawa":
-                this.inspectDescription = "If it weren't in your way, you'd be brave enought to pet it.";
+                this.inspectDescription = "If it weren't in your way, you'd be brave enough to pet it.";
                 this.maximumHP = 150;
                 this.currentHP = maximumHP;
                 this.damage = 40;
@@ -66,7 +66,7 @@ public class Enemy {
                 this.damage = 75;
                 break;
             case "Hell-Pig":
-                this.inspectDescription = "A hellish sight, it's been mottled and mamed by who-knows what.";
+                this.inspectDescription = "A hellish sight, it's been mottled and maimed by who-knows what.";
                 this.attackDescription = "flails it's arms at";
                 this.maximumHP = 300;
                 this.currentHP = maximumHP;

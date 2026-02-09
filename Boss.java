@@ -33,6 +33,10 @@ public class Boss extends Enemy {
                 this.critChance = .4f; 
                 this.critMultiplier = 1.35f;
                 this.markPointsValue = 200;
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+
 
             case "Adamaro, First to Desire":
                 this.inspectDescription = "A powerful demon from the lower rungs of hell. He's known for his devilish deals and terrible magic.";
@@ -44,6 +48,10 @@ public class Boss extends Enemy {
                 this.critChance = .4f; 
                 this.critMultiplier = 1.4f;
                 this.markPointsValue = 300;
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                
 
             case "Amzu, Swarm's Hunger":
                 this.inspectDescription = "A simple nantuko transformed by the power of the dungeon core itself. Though he gained great power and rose to be the leader of the nantuko he lost much of his sanity and composure.";
@@ -55,6 +63,11 @@ public class Boss extends Enemy {
                 this.critChance = .45f; 
                 this.critMultiplier = 1.45f;
                 this.markPointsValue = 400;
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("FISH!"));
+                
 
             case "Final Form Gardner":
                 this.inspectDescription = "THE ULTIMATE BEING. NO BEING BEFORE HOLDS A CANDLE TO HIS POWER. Except maybe you...";
@@ -66,6 +79,14 @@ public class Boss extends Enemy {
                 this.critChance = .8f; 
                 this.critMultiplier = 1.6f;
                 this.markPointsValue = 1000;
+                this.itemDrops.add(new Item("Mr. Gardner's Participation Point Piercer"));
+                this.itemDrops.add(new Item("Glowing Apple"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Samosas"));
+
               
         }
     }

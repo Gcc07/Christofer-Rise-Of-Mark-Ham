@@ -122,13 +122,9 @@ public class GameFlow {
         displayTitle();
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
-<<<<<<< HEAD
-            displayIntro();
-=======
             if (useIntro) {
                 displayIntro();
             }
->>>>>>> 940e1cfa3cfe5684c43667d120a05a71e71b518b
             player = runCharacterCreation();
         } else if (playerDecision == 2) {
             displaySettings();
@@ -139,7 +135,7 @@ public class GameFlow {
 
     public static void displaySettings() {
         // COMPLETE SETTINGS
-        System.out.println("================================");
+        System.out.println("\n================================");
         System.out.println(ANSI_CYAN + "CHRISTOFER: " + ANSI_PURPLE + "THE RISE OF MARK-HAM" + RESET);
         System.out.printf("\n1. Set standard typewrite speed (current speed: " + typeSpeed + ")\n2. Toggle introduction before gameplay (using intro: " + useIntro + ")\n3. Back to home\n\n");
         int playerDecision = getIntInput("Input: ");
@@ -523,7 +519,7 @@ public class GameFlow {
 
                         case 2:
                             //TODO implement moon blessing
-
+                            typewrite(ANSI_BLACK + "\nYou don't have a Moon Blessing");
                             break;
                         default:
                         break;

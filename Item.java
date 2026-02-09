@@ -56,9 +56,10 @@ public class Item {
                 break;
             case "Withheld Toothbrush":
                 this.name = name;
-                this.description = "What's wrong with these dentists?! (-1 Peace, +5 Anger, spawns in Loot Rooms)";
+                this.description = "What's wrong with these dentists?! (-3 Peace, +5 Anger, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
-                this.statUpdateValue.put("Smartness", -1);
+                this.statUpdateValue.put("Peace", -3);
+                this.statUpdateValue.put("Anger", 5);
                 break;
             case "Worn Football":
                 this.name = name;
@@ -79,6 +80,8 @@ public class Item {
                 this.name = name;
                 this.description = "You know what that means! (-1 Finesse, +5 max HP, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Finesse", -1);
+                this.statUpdateValue.put("Life", 5);
                 break;
             case "Heart Key":
                 this.name = name;
@@ -109,11 +112,17 @@ public class Item {
                 this.name = name;
                 this.description = "Ol' reliable damage up, but doesn't open any doors you'd find... (+3 Anger, +3 Smartness, sold in Shops)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Anger", 3);
+                this.statUpdateValue.put("Smartness", 3);
                 break;
             case "Olive Branch":
                 this.name = name;
                 this.description = "You feel tranquil (-3 Anger, +5 Peace, +1 Finesse, +1 Smartness, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Anger", -3);
+                this.statUpdateValue.put("Peace", 5);
+                this.statUpdateValue.put("Finesse", 1);
+                this.statUpdateValue.put("Smartness", 1);
                 break;
             }
         }
