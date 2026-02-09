@@ -5,9 +5,12 @@ public class Item {
     protected float rarity; // IDK if this is going to be implemented
     protected float dropChance; // IDK if this is going to be implemented
 
+    protected int healingValue = 0;
+    protected int markPointsValue = 0;
+
     public static String[] itemTypes = {"Consumable", "Key", "Pet"};
     public static String[] itemNames = {"Karim's Homework", "Evan's Homework", "Samosas", "College Deferral", "Tiny Zingbah",
-    "Spotted Mushroom", "Withheld Toothbrush", "Worn Football", "Chess Pawn", "Killer Bunny", "FISH!", "Heart Key", "Bomb Key", "Card Key", "Key Key"};
+    "Spotted Mushroom", "Withheld Toothbrush", "Worn Football", "Chess Pawn", "Killer Bunny", "FISH!", "Heart Key", "Bomb Key", "Card Key", "Key Key", "Glowing Apple"};
 
     public Item(String name) {
         this.name = name;
@@ -24,6 +27,7 @@ public class Item {
                 break;
             case "Samosas":
                 this.name = name;
+                this.healingValue = 50;
                 this.description = "Tasty regen! (Heals 20 HP, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
                 break;
@@ -87,6 +91,12 @@ public class Item {
                 this.description = "Key of key";
                 this.type = itemTypes[1];
                 break;
+            
+            case "Glowing Apple":
+                this.name = name;
+                this.description = "A shining fruit. It looks healthy.";
+                this.type = itemTypes[0];
+                break;
             }
         }
     
@@ -94,10 +104,23 @@ public class Item {
     public String toString() {
         return "\n\t" + name + " | " + type + "\n\tDescription: " + description + "\n\t";
     }
-    
+
+    public String getType() {
+        return type;
+    }
+
     public String getName() {
         return name;
     }
+
+    public int getHealingValue() {
+        return healingValue;
+    }
+
+    public int getMarkPointsValue() {
+        return healingValue;
+    }
+
     public static String returnRandom() {
         int index = (int) (Math.random() * (itemNames.length));
         return itemNames[index];   

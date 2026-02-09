@@ -64,6 +64,7 @@ public class Room {
 
             case "Special":
                 this.description = "A bright light shines faintly. Where... are you?";
+                roomItems.add(new Item("Glowing Apple"));
                 break;
 
             default: 

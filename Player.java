@@ -23,7 +23,7 @@ public class Player {
         this.maximumHP = 50 + stats.get("Life") * 10; // 50 + Life multiplied 10 to see how much health you have (EX. If you have 10 life stat, you have 150 HP)
         this.currentHP = maximumHP;
         this.currentMP = 0; // Should be 0 as you start out with 0 Mark Points.
-        this.fleeChance = stats.get("Finesse") * .04f; // at 25 finesse you have a 100% escape chance
+        this.fleeChance = 0 + stats.get("Finesse") * .04f; // at 25 finesse you have a 100% escape chance
         this.equippedWeapon = (Weapon)items.get(0); // Relies on weapon being first thing in inventory
         this.encounterChance = .5f // 50% encounter chance
         - (stats.get("Finesse") * .01f) // -.01 chance for each Finesse,
@@ -86,7 +86,40 @@ public class Player {
     }
 
     public void useItem(Item item) {
-        //TODO
+        switch (item.getType()) {
+            case "Consumable":
+                consumeItem(item);
+                break;
+            case "Weapon":
+                Weapon weapon = (Weapon)item;
+                equipWeapon(weapon);
+                break;
+            case "Key":
+                return;
+            default:
+                break;
+        }
+    }
+
+    public void consumeItem(Item item) {
+        if (item.getHealingValue() >= 0) {
+            currentHP += item.getHealingValue();
+            if (currentHP > maximumHP) {
+                currentHP = maximumHP;
+            }
+        }
+        if (item.getMarkPointsValue() >= 0) {
+            currentMP += item.getMarkPointsValue();
+        }
+        dropItem(item);
+    }
+
+    public void dropItem(Item item) {
+        items.remove(item);
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        equippedWeapon = weapon;
     }
 
     public Weapon getEquippedWeapon() {
@@ -95,6 +128,14 @@ public class Player {
 
     public void applyEffect() {
 
+    }
+
+    public void gainMP(int markPointsValue) {
+        currentMP += markPointsValue;
+    }
+
+    public float getFleeChance() {
+        return fleeChance;
     }
 
     @Override

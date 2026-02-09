@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class GameFlow {
@@ -21,6 +22,8 @@ public class GameFlow {
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String RESET = "\u001B[37m";
     
+    public static boolean gameOver = false;
+
     public static Player player;
     public static ArrayList<Room> dungeon;
 
@@ -51,7 +54,10 @@ public class GameFlow {
     }
 
     public static void main(String[] args) {
-        runGameLoop();
+        while(!gameOver){
+            runGameLoop();
+        }
+        
     }
 
     // Roblox wait function in java!
@@ -142,7 +148,12 @@ public class GameFlow {
                     typewrite(1, player.getInventory().get(i).toString(),true);
                 }
                 playerDecision = getIntInput("Select an Item to use: ");
-                player.useItem(player.getInventory().get(playerDecision));
+                try {
+                    player.useItem(player.getInventory().get(playerDecision-1));
+                } catch (Exception e) {
+                    break;
+                }
+                
             case 3:
                 //TODO Information codex
 
@@ -269,23 +280,27 @@ public class GameFlow {
         switch (playerDecision) {
             
             case 1: // If the player wants to search the room, they have a chance of being ambushed. (encounterChance)
-                System.out.println(room.getEnemies());
+                //System.out.println(room.getEnemies()); DEBUGGING
+
                 float encounterChance = rollRandomFloat();
                 if (encounterChance <= player.getEncounterChance() && (!room.getEnemies().isEmpty()) ) { 
-                    System.out.println("ENCOUNTER CHANCE: " + encounterChance + " | PLAYER %: " + player.getEncounterChance());
+                    // System.out.println("ENCOUNTER CHANCE: " + encounterChance + " | PLAYER %: " + player.getEncounterChance()); // DEBUGGING
+
                     Enemy foundEnemy = room.selectRandomEnemy();
-                    typewrite(ANSI_BLUE + "You search the room");
+                    typewrite(ANSI_BLUE + "\nYou search the room");
                     waitSeconds(1);
                     typewrite(150, "...", true);
                     waitSeconds(1);
                     typewrite(200, "...", true);
                     waitSeconds(2);
                     typewrite(ANSI_RED + "Whilst searching, you were ambushed!" + RESET);
-                    battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
+                    Object winner = battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
+                    determineWinner(winner, player, foundEnemy, room);
+                    
                 } 
                 else {
-                    System.out.println(room.getItems());
-                    typewrite(ANSI_BLUE + "You search the room");
+                    // System.out.println(room.getItems()); DEBUGGING
+                    typewrite(ANSI_BLUE + "\nYou search the room");
                     waitSeconds(1);
                     typewrite(150, "...", true);
                     waitSeconds(1);
@@ -309,8 +324,9 @@ public class GameFlow {
                 if (!room.getEnemies().isEmpty()) {
                     Enemy foundEnemy = room.selectRandomEnemy();
                     typewrite(ANSI_BLUE + "\nYou approach " + ANSI_RED + foundEnemy.getName() + ".\n" + RESET);
-                    battle(player, foundEnemy);
-                    //Then once battle is over, resume roomtivities.
+                    
+                    Object winner = battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
+                    determineWinner(winner, player, foundEnemy, room);
                 }
                 else {
                     typewrite(ANSI_BLUE + "\nThere is nobody to approach.\n" + RESET);
@@ -329,9 +345,9 @@ public class GameFlow {
                     typewrite(200, "...", true);
                     waitSeconds(2);
                     typewrite(ANSI_RED + "Enemies block your way!" + RESET);
-                    battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
-                    typewrite("With the enemy dead, you tread on. \n");
-                    break;
+
+                    Object winner = battle(player, foundEnemy); // If the encounter chance ends up matching, then a battle will happen.
+                    determineWinner(winner, player, foundEnemy, room);
                 } 
                 else {
                     typewrite(ANSI_BLUE + "\nYou attempt to move rooms");
@@ -420,7 +436,27 @@ public class GameFlow {
             typewrite("\n");
         }
     }
-    public static void battle(Player player, Enemy enemy) {
+
+    public static void determineWinner(Object winner, Player player, Enemy enemy, Room room) {
+        if (winner.getClass().isInstance(player.getClass()) || winner.getClass().equals(player.getClass())) {
+            typewrite(ANSI_BLUE + "\nDefeated " + ANSI_RED + enemy.getName() + ANSI_BLUE); 
+            for (Item i : enemy.itemDrops) {
+                player.addItemToInventory(i);
+                typewrite(ANSI_YELLOW + i.getName() + ANSI_BLUE + " added to inventory.");
+            }
+            player.gainMP(enemy.getMarkPointsValue());
+            typewrite(ANSI_PURPLE + enemy.getMarkPointsValue() +  " MP " + ANSI_BLUE +"gained." + RESET + "\n");
+
+            room.getEnemies().remove(enemy); // Remove enemy after battle.
+                        
+        } else if (winner.getClass().isInstance(enemy.getClass())) { // IF ENEMY IS WINNER
+            gameOver();
+        } else { // NULL
+            typewrite(ANSI_BLUE + "\nYou fled." + RESET);
+        }
+    }
+    
+    public static Object battle(Player player, Enemy enemy) {
         waitSeconds(1);
         moveDown();
         typewrite(ANSI_BLUE + enemy.getDescription() + RESET);
@@ -446,6 +482,9 @@ public class GameFlow {
                             + " for " + ANSI_YELLOW + playerDamageDealt
                             + " DMG!" + RESET);
 
+                            if (enemy.isDead()) {
+                                return player; // If the enemy is dead, return player
+                            }
                             // Enemy turn
                             typewrite(ANSI_BLUE + "\n... The Enemy Responds: ");
                             waitSeconds(1);
@@ -458,6 +497,9 @@ public class GameFlow {
                             //TODO Enemy actions OTHER than attack.
 
                         case 2:
+                            //TODO implement moon blessing
+
+                            break;
                         default:
                         break;
                     }
@@ -468,18 +510,36 @@ public class GameFlow {
                     typewrite(1, player.getInventory().get(i).toString(),true);
                     }
                     playerDecision = getIntInput("Select an Item to use: ");
-                    player.useItem(player.getInventory().get(playerDecision));
+                    player.useItem(player.getInventory().get(playerDecision - 1));
                     break;
                 case 3: //TODO Study Enemy
                     typewrite("\n" + ANSI_BLUE + enemy.inspect());
                     typewrite("\nEnemy health: " + enemy.getHealth() + "/" + enemy.getMaxHealth() + RESET);
                     break;
                 case 4: //TODO Attempt Flee
+                    float fleeChance = rollRandomFloat();
+                    if (fleeChance <= player.getFleeChance()) { 
+
+                        return Optional.empty(); // Fleeing, so no winner
+                    }
                 default:
                     break;
             }
         }
+        if (player.isDead()) {
+            return player;
+        }
+        else if (enemy.isDead()) {
+            return enemy;
+        }
+        else {
+            return null;
+        }
     } 
+
+    public static void gameOver() {
+        gameOver = true;
+    }
     public static int getPlayerDamage(Player player) {
         Weapon weapon = player.getEquippedWeapon();
         int baseDamage = weapon.getDamage();
@@ -605,25 +665,32 @@ public class GameFlow {
         System.out.println(RESET);
         switch (pressPhase[0]) {
             case -1: // Didn't click
+                typewrite(10, ANSI_GREY + "Miss!",false);
                 multipler = 0.6f;
                 break;
             case 0: // Red
+                typewrite(10,ANSI_RED + "Yikes!",false);
                 multipler = 0.8f;
                 break;
             case 1: // Yellow
+                typewrite(10,ANSI_YELLOW + "Meh.",false);
                 multipler = 1f;
                 break;
             case 2: // Green
+                typewrite(10,ANSI_GREEN + "Hit!",false);
                 multipler = 1.1f;
                 break;
             case 3: // Blue
+                typewrite(10,ANSI_CYAN+ "Brilliant!",false);
                 multipler = 1.5f;
                 break;
             default:
                 multipler = .5f;
-            
+                break;
         }
+        System.out.println();
         return multipler;
     }
+
 }    
     

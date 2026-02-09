@@ -13,9 +13,10 @@ public class Enemy {
     protected String name;
     protected String description;
     protected String inspectDescription; // Lowkey just CHECK from undertale
-    protected String attackDescription; // _____ lunges forth!
+    protected String attackDescription; // _____ -->lunges forth at<-- ______ for _______ Dmg! (The arrow part)
     protected int currentHP;
     protected int maximumHP;
+    protected int markPointsValue;
     protected int damage;
     protected float critChance;
     protected float critMultiplier;
@@ -30,14 +31,16 @@ public class Enemy {
         this.name = name;
         this.description = "An enemy.";
         this.inspectDescription = "A foe just like any other foe. Take them down.";
-        this.attackDescription = "lunges forth";
+        this.attackDescription = "lunges forth at";
         this.itemDrops = new ArrayList<Item>();
         this.critChance = .1f; // 10% crit chance.
         this.critMultiplier = 1.2f;
+        this.markPointsValue = 50;
+        this.itemDrops.add(new Item("Samosas"));
         switch (name) {
             case "Goblin" :
                 this.inspectDescription = "A devilish, cackling little creature. It clearly hasn't been introduced to the idea of a bath.";
-                this.maximumHP = 100;
+                this.maximumHP = 50;
                 this.currentHP = maximumHP;
                 this.damage = 20;
                 break;
@@ -115,6 +118,11 @@ public class Enemy {
     public int getHealth() {
         return currentHP;
     }
+
+    public int getMarkPointsValue() {
+        return markPointsValue;
+    }
+
     public String inspect() {
         return inspectDescription;
     }
