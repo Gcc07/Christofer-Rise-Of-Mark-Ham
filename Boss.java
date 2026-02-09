@@ -36,6 +36,7 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
+                this.itemDrops.add(new Item("Worn Football"));
 
 
             case "Adamaro, First to Desire":
@@ -51,7 +52,7 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
-                
+                this.itemDrops.add(new Item("College Deferral"));
 
             case "Amzu, Swarm's Hunger":
                 this.inspectDescription = "A simple nantuko transformed by the power of the dungeon core itself. Though he gained great power and rose to be the leader of the nantuko he lost much of his sanity and composure.";
