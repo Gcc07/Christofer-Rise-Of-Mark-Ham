@@ -4,8 +4,10 @@ import java.util.Hashtable;
 
 public class Weapon extends Item{
     protected String prefix;
-    protected float damage;
-    protected float critChance; // IDK if this is going to be implemented
+    protected int damage;
+    protected float critChance;
+    protected float critMultiplier;
+
     
     protected Dictionary<String, Float> scalingType;
 
@@ -29,6 +31,7 @@ public class Weapon extends Item{
         this.type = "Weapon";
         this.name = name;
         this.scalingType = new Hashtable<>();
+        this.critMultiplier = 1.2f;
         switch(name) { // I used claude to create the switch cases after I made one singular case. - GABE
             // Also, I wrote all of the item descriptions.
             case "N's Odachi of the East":
@@ -127,6 +130,18 @@ public class Weapon extends Item{
     public static String returnRandom() { // Returns a random weapon name from the nameChoices list
         int index = (int) (Math.random() * (weaponNames.length));
         return weaponNames[index];
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public float getCritChance() {
+        return critChance;
+    }
+
+    public float getCritMultiplier() {
+        return critMultiplier;
     }
 
     @Override

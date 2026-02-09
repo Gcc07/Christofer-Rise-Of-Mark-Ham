@@ -63,6 +63,15 @@ public class GameFlow {
         }
     }
 
+    // Used for even more specific time-based stuff
+    private static void waitMilliseconds(long ms) {
+    try {
+        Thread.sleep(ms);
+    } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+    }
+}
+
     // This writes out a string like typed text with two versions. (This one has variable speed and can use a new line conditionally.)
 
     public static void typewrite(int speed, String text, boolean useNewLine) {
@@ -130,7 +139,7 @@ public class GameFlow {
 
                 for (int i = 0; i < player.getInventory().size(); i++) {
                     System.out.print("\n\t" + (i + 1) + ".) ");
-                    typewrite(player.getInventory().get(i).toString());
+                    typewrite(1, player.getInventory().get(i).toString(),true);
                 }
                 playerDecision = getIntInput("Select an Item to use: ");
                 player.useItem(player.getInventory().get(playerDecision));
@@ -194,9 +203,11 @@ public class GameFlow {
 
         Player player = new Player(name, fortune, stats, items);
         
-        typewrite(ANSI_BLUE + "Intriguing, " + name.split(" ")[0]);
+        typewrite(20, ANSI_BLUE + getRandomNameReaction(), false);
         waitSeconds(1);
-        typewrite(50,  "Good luck in there." + RESET, true);
+        typewrite(ANSI_YELLOW +  name.split(" ")[0]);
+        waitSeconds(1);
+        typewrite(50,  ANSI_BLUE + "Good luck in there.\n" + RESET, false);
         waitSeconds(1);
         
         typewrite(1, player.toString(), true);
@@ -350,11 +361,14 @@ public class GameFlow {
     }
 
     public static String getNameSequence() {
-        typewrite(50, "What is your name?", false);
+        typewrite(40, "What is your name?", false);
         String name = getStringInput(": ");
         if (name.isEmpty()) {
+            typewrite(500, "...", true);
+
             typewrite("At least you know you cannot choose.");
-            typewrite("Your name is...");
+            waitSeconds(1);
+            typewrite("Your name is:");
             waitSeconds(1);
             name = getRandomName();
             waitSeconds(1);
@@ -395,6 +409,12 @@ public class GameFlow {
         return firstNames[fIndex] + " " + lastNames[lIndex];
     }
 
+    public static String getRandomNameReaction(){
+        String[] reactions = {"I like that name, ", "It's been a pleasure, ", "How interesting, ", "I hope there's more to you than this, ", "Perhaps you are the one, "};
+        int rIndex = (int) (Math.random() * (reactions.length));
+        return reactions[rIndex];
+    }
+
     public static void moveDown() {
         for (int i = 0; i < 20; i++) {
             typewrite("\n");
@@ -406,33 +426,204 @@ public class GameFlow {
         typewrite(ANSI_BLUE + enemy.getDescription() + RESET);
 
 
-        typewrite(5, "\n1. Attack\n2. Use Item\n3. Inspect " + enemy.getName() + "\n" + ANSI_BLACK + "4. Flee\n" + RESET, false);
-        int playerDecision = getIntInput("\nInput: ");
-        switch (playerDecision) { 
+        while(!player.isDead() && !enemy.isDead()) {
+            typewrite(5, "\n1. Attack\n2. Use Item\n3. Inspect " + enemy.getName() + "\n" + ANSI_BLACK + "4. Flee\n" + RESET, false);
+            int playerDecision = getIntInput("\nInput: ");
+            switch (playerDecision) { 
 
-            case 1: // Attack
-                typewrite(5, "\n1. Use" + player.getEquippedWeapon() + "\n2. Use Moonblessing\n" + ANSI_BLACK + "3. Return" + RESET, false);
-                int fightDecision = getIntInput("\nInput: ");
-                switch (fightDecision) {
-                    case 1:
-                        int playerDamageDealt = getPlayerDamage(player);
-                        typewrite(player.getName() + " attacked " + enemy.getName() + "with" + player.getEquippedWeapon() + " for " + playerDamageDealt);
-                    case 2:
-                    default:
+                case 1: // Attack
+                    typewrite(5, "\n1. Use " + player.getEquippedWeapon().getName() + "\n2. Use Moonblessing\n" + ANSI_BLACK + "3. Return" + RESET, true);
+                    int fightDecision = getIntInput("\nInput: ");
+                    switch (fightDecision) {
+                        case 1:
+                            
+                            // Player turn
+                            typewrite("\n");
+                            int playerDamageDealt = getPlayerDamage(player);
+                            enemy.takeDamage(playerDamageDealt);
+                            typewrite("\n" + ANSI_BLUE + player.getName() + " attacked " + ANSI_RED + enemy.getName() + ANSI_BLUE
+                            + " with " + ANSI_YELLOW + player.getEquippedWeapon().getName() + ANSI_BLUE 
+                            + " for " + ANSI_YELLOW + playerDamageDealt
+                            + " DMG!" + RESET);
+
+                            // Enemy turn
+                            typewrite(ANSI_BLUE + "\n... The Enemy Responds: ");
+                            waitSeconds(1);
+                            int enemyDamageDealt = applyCritChanceMultiplier(enemy.getDamage(), enemy.getCritChance(), enemy.getCritMultiplier());
+                            player.takeDamage(enemyDamageDealt);
+                            typewrite("\n" + ANSI_RED + enemy.getName() + ANSI_BLUE + " " + enemy.getAttackDescription() + " " + player.getName() + ANSI_BLUE
+                            + " for " + ANSI_YELLOW + enemyDamageDealt
+                            + " DMG!" + RESET);
+
+                            //TODO Enemy actions OTHER than attack.
+
+                        case 2:
+                        default:
+                        break;
+                    }
                     break;
-                }
-            case 2: //TODO Use Item
-            case 3: //TODO Study Enemy
-            case 4: //TODO Attempt Flee
-            default:
-                break;
+                case 2: //TODO Use Item
+                    for (int i = 0; i < player.getInventory().size(); i++) {
+                    System.out.print("\n\t" + (i + 1) + ".) ");
+                    typewrite(1, player.getInventory().get(i).toString(),true);
+                    }
+                    playerDecision = getIntInput("Select an Item to use: ");
+                    player.useItem(player.getInventory().get(playerDecision));
+                    break;
+                case 3: //TODO Study Enemy
+                    typewrite("\n" + ANSI_BLUE + enemy.inspect());
+                    typewrite("\nEnemy health: " + enemy.getHealth() + "/" + enemy.getMaxHealth() + RESET);
+                    break;
+                case 4: //TODO Attempt Flee
+                default:
+                    break;
+            }
         }
-        
-        
-    }
+    } 
     public static int getPlayerDamage(Player player) {
-        return 4;
+        Weapon weapon = player.getEquippedWeapon();
+        int baseDamage = weapon.getDamage();
+        float multiplier = multiplierMiniGame(50);
+        int damageBeforeMiniGameMultiplier = applyCritChanceMultiplier(baseDamage, weapon.getCritChance(), weapon.getCritMultiplier());
+        int final_damage = (int)(damageBeforeMiniGameMultiplier * multiplier);
+        return final_damage;
     }
-    
+
+    public static int applyCritChanceMultiplier(int baseDamage, float critChance, float critMultiplier) {
+        float checkCritChance = rollRandomFloat();
+
+        if (checkCritChance <= critChance) {
+            return (int)(baseDamage * critMultiplier);
+        }
+        else {
+            return baseDamage;
+        }
+    }
+
+    public static float multiplierMiniGame(long millisecondSpeed) {
+        float multipler;
+        final boolean[] enterPressed = {false};
+        final int[] pressPhase = {-1}; // -1 = not pressed, 0-2 = phase types (red, yellow then green.)
+
+        Thread inputThread = new Thread(() -> {
+            try {
+                System.in.read(); // Wait for any key press (Enter)
+                enterPressed[0] = true;
+                // Don't try to move cursor - just detect the press
+            } catch (Exception e) {}
+        });
+
+        inputThread.setDaemon(true);
+        inputThread.start();
+
+        // Phase 0: Red (low damage)
+        System.out.print(ANSI_RED);
+        for (int i = 0; i < 5; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed); // 100ms per character
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 0;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+        System.out.print(ANSI_YELLOW);
+        for (int i = 0; i < 4; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed); // 100ms per character
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 1;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+        System.out.print(ANSI_GREEN);
+        for (int i = 0; i < 2; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed); // 100ms per character
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 2;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+        System.out.print(ANSI_BLUE);
+        for (int i = 0; i < 1; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed); // 100ms per character
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 3;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+        System.out.print(ANSI_GREEN);
+        for (int i = 0; i < 2; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed); // 100ms per character
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 2;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+        System.out.print(ANSI_YELLOW);
+        for (int i = 0; i < 4; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed); // 100ms per character
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 1;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+        System.out.print(ANSI_RED);
+        for (int i = 0; i < 5; i++) {
+            System.out.print("|█|\n"); // Whitespace character (Will be color)
+            System.out.flush();
+            waitMilliseconds(millisecondSpeed);
+            if (enterPressed[0] && pressPhase[0] == -1) { // If it is pressed
+                pressPhase[0] = 0;
+                System.out.print("\033[1A\033[K"); // Move up 1 line, clear to end of line
+                System.out.print("|X|\n");
+                break;
+            }
+        }
+
+        System.out.println(RESET);
+        switch (pressPhase[0]) {
+            case -1: // Didn't click
+                multipler = 0.6f;
+                break;
+            case 0: // Red
+                multipler = 0.8f;
+                break;
+            case 1: // Yellow
+                multipler = 1f;
+                break;
+            case 2: // Green
+                multipler = 1.1f;
+                break;
+            case 3: // Blue
+                multipler = 1.5f;
+                break;
+            default:
+                multipler = .5f;
+            
+        }
+        return multipler;
+    }
 }    
     

@@ -38,10 +38,11 @@ public class Player {
 
     public void takeDamage(int amount) {
         this.currentHP = currentHP - amount;
-        if (currentHP < 0) {
-            this.isDead = true;
+        if (currentHP <= 0) {
+            isDead = true;
         }
     }
+
     // I haven't implemented functionality for player fortune just yet. It's simply a reflection of how lucky you got with rolls.
     public static String getPlayerFortune(int startingStatTotal) {
         if (startingStatTotal <= 35) {     
@@ -80,8 +81,12 @@ public class Player {
         return name;
     }
 
+    public boolean isDead() {
+        return isDead;
+    }
+
     public void useItem(Item item) {
-        
+        //TODO
     }
 
     public Weapon getEquippedWeapon() {
@@ -95,6 +100,7 @@ public class Player {
     @Override
     public String toString() {
         return "\nName: " + name + " | Level: " + level + " | Fortune: " + fortune + "\n================================" + 
+            "\nWeapon: " + GameFlow.RESET + equippedWeapon.name + GameFlow.RESET +
             "\nHealth: " + currentHP + " / " + maximumHP +
             "\nMark Points: " + currentMP + 
             "\nStats: " + 
@@ -104,5 +110,7 @@ public class Player {
             GameFlow.ANSI_CYAN + "Smartness: " + GameFlow.ANSI_RESET + stats.get("Smartness") + " " +
             GameFlow.ANSI_GREEN + "Finesse: " + GameFlow.ANSI_RESET + stats.get("Finesse") +
             "\nItems: " + items.toString() + "\n================================\n";
+            
+
     }   
 }

@@ -18,6 +18,7 @@ public class Enemy {
     protected int maximumHP;
     protected int damage;
     protected float critChance;
+    protected float critMultiplier;
     protected boolean isDead = false;
     protected ArrayList<Item> itemDrops;
     
@@ -32,51 +33,96 @@ public class Enemy {
         this.attackDescription = "lunges forth";
         this.itemDrops = new ArrayList<Item>();
         this.critChance = .1f; // 10% crit chance.
+        this.critMultiplier = 1.2f;
         switch (name) {
             case "Goblin" :
                 this.inspectDescription = "A devilish, cackling little creature. It clearly hasn't been introduced to the idea of a bath.";
                 this.maximumHP = 100;
                 this.currentHP = maximumHP;
                 this.damage = 20;
+                break;
             case "Chiikawa":
                 this.inspectDescription = "If it weren't in your way, you'd be brave enought to pet it.";
                 this.maximumHP = 150;
                 this.currentHP = maximumHP;
                 this.damage = 40;
+                break;
             case "Slime":
                 this.inspectDescription = "It's a slimy little thing. Nothing more, nothing less.";
-                this.attackDescription = "oobles towards you";
+                this.attackDescription = "menacingly oobles towards"; // These need to be in the gramatical format of "attacks."
+                // The format is as follows:                                  (ENEMY) (attackDescription) (PLAYER) for (DAMAGE)
                 this.maximumHP = 80;
                 this.currentHP = maximumHP;
                 this.damage = 10;
+                break;
             case "Skeleton":
                 this.inspectDescription = "Evan The Destroyer is known for taking these down. You can too. (Beware, it's armed. It could be more damaging than expected...)";
                 this.maximumHP = 50;
                 this.currentHP = maximumHP;
                 this.damage = 75;
+                break;
             case "Hell-Pig":
                 this.inspectDescription = "A hellish sight, it's been mottled and mamed by who-knows what.";
-                this.attackDescription = "flails it's arms";
+                this.attackDescription = "flails it's arms at";
                 this.maximumHP = 300;
                 this.currentHP = maximumHP;
                 this.damage = 12;
+                break;
             case "Nantuko":
                 this.inspectDescription = "What in Earlycolegia even is this thing? It's mean and green.";
-                this.attackDescription = "casts a damaging spell";
+                this.attackDescription = "casts a damaging spell at";
                 this.maximumHP = 150;
                 this.currentHP = maximumHP;
                 this.damage = 40;
+                break;
         }
     }
     public static String returnRandom() { // Returns a random enemy name from the enemyNames list
         int index = (int) (Math.random() * (enemyNames.length));
         return enemyNames[index];
     }
+    public boolean isDead() {
+        return isDead;
+    }
+
+    public void takeDamage(int amount) {
+        this.currentHP = currentHP - amount;
+        if (currentHP <= 0) {
+            isDead = true;
+        }
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public float getCritChance() {
+        return critChance;
+    }
+
+    public float getCritMultiplier() {
+        return critMultiplier;
+    }
+
+    public String getAttackDescription() {
+        return attackDescription;
+    }
+
+    public int getMaxHealth(){
+        return maximumHP;
+    }
+
+    public int getHealth() {
+        return currentHP;
+    }
+    public String inspect() {
+        return inspectDescription;
+    }
 
     public String getName() { 
         return name;
     }
-    
+
     public String getDescription() {
         return description;
     }
