@@ -120,7 +120,7 @@ public class GameFlow {
         displayTitle();
         int playerDecision = getIntInput("Input: ");
         if (playerDecision == 1) {
-            //displayIntro();
+            displayIntro();
             player = runCharacterCreation();
         }
         dungeon = createDungeon(30);

@@ -49,6 +49,7 @@ public class Enemy {
                 this.maximumHP = 150;
                 this.currentHP = maximumHP;
                 this.damage = 40;
+                this.critChance = .5f;
                 break;
             case "Slime":
                 this.inspectDescription = "It's a slimy little thing. Nothing more, nothing less.";

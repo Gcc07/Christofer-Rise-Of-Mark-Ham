@@ -1,3 +1,6 @@
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 public class Item {
     protected String name;
     protected String description;
@@ -7,28 +10,33 @@ public class Item {
 
     protected int healingValue = 0;
     protected int markPointsValue = 0;
-
+    protected Dictionary<String, Integer> statUpdateValue;
     public static String[] itemTypes = {"Consumable", "Key", "Pet"};
-    public static String[] itemNames = {"Karim's Homework", "Evan's Homework", "Samosas", "College Deferral", "Tiny Zingbah",
-    "Spotted Mushroom", "Withheld Toothbrush", "Worn Football", "Chess Pawn", "Killer Bunny", "FISH!", "Heart Key", "Bomb Key", "Card Key", "Key Key", "Glowing Apple"};
+    public static String[] itemNames = {"Karim's Homework", "Evan's Homework", "Samosas", "College Deferral", "Lil' Zingbah",
+    "Spotted Mushroom", "Withheld Toothbrush", "Worn Football", "Chess Pawn", "Killer Bunny", "FISH!",
+    "Heart Key", "Bomb Key", "Card Key", "Key Key", "Glowing Apple", "Classroom Key", "Olive Branch"};
 
     public Item(String name) {
         this.name = name;
+        this.statUpdateValue = new Hashtable<>();
         switch(name) {
             case "Karim's Homework":
                 this.name = name;
                 this.description = "It's not done... (-1 Smartness, +5 Peace, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Peace", 5);
+                this.statUpdateValue.put("Smartness", -1);
                 break;
             case "Evan's Homework":
                 this.name = name;
                 this.description = "He's solved the three body problem (+5 Smartness, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Smartness", 5);
                 break;
             case "Samosas":
                 this.name = name;
                 this.healingValue = 50;
-                this.description = "Tasty regen! (Heals 20 HP, spawns in Loot Rooms)";
+                this.description = "Tasty regen! (Heals 50 HP, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
                 break;
             case "College Deferral":
@@ -36,7 +44,7 @@ public class Item {
                 this.description = "Cross your fingers... (Rerolls your Life, Anger, Peace, Smartness and Finesse, sold in Shops)";
                 this.type = itemTypes[0];
                 break;
-            case "Tiny Zingbah":
+            case "Lil' Zingbah":
                 this.name = name;
                 this.description = "Boohbah, Boohbah! (From now on, miniature Zing Zing Zingbah attacks the enemy after you and deals your damage, might spawn when defeating a Boohbah)";
                 this.type = itemTypes[2];
@@ -50,6 +58,7 @@ public class Item {
                 this.name = name;
                 this.description = "What's wrong with these dentists?! (-1 Peace, +5 Anger, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Smartness", -1);
                 break;
             case "Worn Football":
                 this.name = name;
@@ -91,10 +100,19 @@ public class Item {
                 this.description = "Key of key";
                 this.type = itemTypes[1];
                 break;
-            
             case "Glowing Apple":
                 this.name = name;
                 this.description = "A shining fruit. It looks healthy.";
+                this.type = itemTypes[0];
+                break;
+            case "Classroom Key":
+                this.name = name;
+                this.description = "Ol' reliable damage up, but doesn't open any doors you'd find... (+3 Anger, +3 Smartness, sold in Shops)";
+                this.type = itemTypes[0];
+                break;
+            case "Olive Branch":
+                this.name = name;
+                this.description = "You feel tranquil (-3 Anger, +5 Peace, +1 Finesse, +1 Smartness, spawns in Loot Rooms)";
                 this.type = itemTypes[0];
                 break;
             }
@@ -119,6 +137,10 @@ public class Item {
 
     public int getMarkPointsValue() {
         return healingValue;
+    }
+
+    public Dictionary<String, Integer> getStatUpdateValue() {
+        return statUpdateValue;
     }
 
     public static String returnRandom() {

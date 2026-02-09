@@ -111,6 +111,9 @@ public class Player {
         if (item.getMarkPointsValue() >= 0) {
             currentMP += item.getMarkPointsValue();
         }
+        if (!item.getStatUpdateValue().isEmpty()) {
+            return;
+        }
         dropItem(item);
     }
 
