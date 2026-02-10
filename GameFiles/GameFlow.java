@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class GameFlow {
 
-    // Color codes for game
+    // These are ANSI Color codes for game
     // A couple things about these codes, you format it as:         CODE + "String" + RESET             In order to make colored text. - Gabe
     // If you need to use them in another file, simply call:            GameFlow.CODE;
     
@@ -56,6 +56,7 @@ public class GameFlow {
         }
     }
 
+    // Main method for running game loop
     public static void main(String[] args) {
         while(!gameOver){
             runGameLoop();
@@ -133,8 +134,9 @@ public class GameFlow {
         enterDungeon(dungeon, player);
     }
 
+
+    // Displays game options before entering the dungeon / playing.
     public static void displaySettings() {
-        // COMPLETE SETTINGS
         System.out.println("\n================================");
         System.out.println(ANSI_CYAN + "CHRISTOFER: " + ANSI_PURPLE + "THE RISE OF MARK-HAM" + RESET);
         System.out.printf("\n1. Set standard typewrite speed (current speed: " + typeSpeed + ")\n2. Toggle introduction before gameplay (using intro: " + useIntro + ")\n3. Back to home\n\n");
@@ -516,6 +518,7 @@ public class GameFlow {
                             + " DMG!" + RESET);
 
                             //TODO Enemy actions OTHER than attack.
+                            break;
 
                         case 2:
                             //TODO implement moon blessing
