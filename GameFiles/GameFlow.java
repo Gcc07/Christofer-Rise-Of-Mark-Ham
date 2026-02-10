@@ -130,7 +130,7 @@ public class GameFlow {
         } else if (playerDecision == 2) {
             displaySettings();
         }
-        dungeon = createDungeon(10);
+        dungeon = createDungeon(30);
         enterDungeon(dungeon, player);
     }
 
