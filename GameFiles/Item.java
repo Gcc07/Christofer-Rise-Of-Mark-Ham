@@ -41,8 +41,10 @@ public class Item {
                 break;
             case "College Deferral":
                 this.name = name;
-                this.description = "Cross your fingers... (Rerolls your Life, Anger, Peace, Smartness and Finesse, sold in Shops)";
+                this.description = "Cross your fingers... (-10 Peace, + 10 Anger) "; // (Rerolls your Life, Anger, Peace, Smartness and Finesse, sold in Shops)";
                 this.type = itemTypes[0];
+                this.statUpdateValue.put("Peace", -10);
+                this.statUpdateValue.put("Anger", 10);
                 break;
             case "Lil' Zingbah":
                 this.name = name;
@@ -51,7 +53,8 @@ public class Item {
                 break;
             case "Spotted Mushroom":
                 this.name = name;
-                this.description = "You can smell color (Doubles your MP, spawns in Loot Rooms rarely)";
+                this.description = "You can smell color (+ 100 MP, spawns in Loot Rooms rarely)";
+                this.markPointsValue = 100;
                 this.type = itemTypes[0];
                 break;
             case "Withheld Toothbrush":
@@ -105,19 +108,21 @@ public class Item {
                 break;
             case "Glowing Apple":
                 this.name = name;
-                this.description = "A shining fruit. It looks healthy.";
+                this.description = "A shining fruit. It looks healthy. (+1 Life, Heals 20 HP)";
                 this.type = itemTypes[0];
+                this.healingValue = 20;
+                this.statUpdateValue.put("Life", 1);
                 break;
             case "Classroom Key":
                 this.name = name;
-                this.description = "Ol' reliable damage up, but doesn't open any doors you'd find... (+3 Anger, +3 Smartness, sold in Shops)";
+                this.description = "Ol' reliable damage up, but doesn't open any doors you'd find... (+3 Anger, +3 Smartness)";
                 this.type = itemTypes[0];
                 this.statUpdateValue.put("Anger", 3);
                 this.statUpdateValue.put("Smartness", 3);
                 break;
             case "Olive Branch":
                 this.name = name;
-                this.description = "You feel tranquil (-3 Anger, +5 Peace, +1 Finesse, +1 Smartness, spawns in Loot Rooms)";
+                this.description = "You feel tranquil (-3 Anger, +5 Peace, +1 Finesse, +1 Smartness)";
                 this.type = itemTypes[0];
                 this.statUpdateValue.put("Anger", -3);
                 this.statUpdateValue.put("Peace", 5);

@@ -97,7 +97,7 @@ public class Enemy {
     }
 
     public int getDamage() {
-        return damage;
+        return damage - 1;
     }
 
     public float getCritChance() {
@@ -130,6 +130,10 @@ public class Enemy {
 
     public String getName() { 
         return name;
+    }
+
+    public boolean isBoss(){
+        return false;
     }
 
     public String getDescription() {

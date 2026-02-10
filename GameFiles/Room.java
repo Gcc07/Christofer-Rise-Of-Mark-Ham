@@ -63,8 +63,11 @@ public class Room {
                 break;
 
             case "Special":
-                this.description = "A bright light shines faintly. Where... are you?";
-                roomItems.add(new Item("Glowing Apple"));
+                this.description = "A bright light shines faintly. You stand before an impossibly large tree. Where... are you?";
+                for (int i = 0; i < GameFlow.rollRandom(2, 5); i++) {
+                    roomItems.add(new Item("Glowing Apple"));
+                }
+                
                 break;
 
             default: 
@@ -93,6 +96,14 @@ public class Room {
 
     public int calculateMaxItems(int initialMax) {
         return Math.abs(initialMax - (int)(Math.ceil(roomNumber * .2)));
+    }
+
+    public void addEnemyToRoom(Enemy enemy) {
+        roomEnemies.add(enemy);
+    }
+
+    public void clearEnemies() {
+        roomEnemies.clear();
     }
 
     public int getRoomNumber() {

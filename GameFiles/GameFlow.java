@@ -130,7 +130,7 @@ public class GameFlow {
         } else if (playerDecision == 2) {
             displaySettings();
         }
-        dungeon = createDungeon(30);
+        dungeon = createDungeon(10);
         enterDungeon(dungeon, player);
     }
 
@@ -143,7 +143,7 @@ public class GameFlow {
         int playerDecision = getIntInput("Input: ");
         switch(playerDecision) {
             case 1:
-                typeSpeed = getIntInput("\nEnter new type speed: " + ANSI_GREEN);
+                typeSpeed = getIntInput("\nEnter new type speed: ");
                 displaySettings();
             case 2:
                 useIntro = !useIntro;
@@ -173,6 +173,7 @@ public class GameFlow {
                 playerDecision = getIntInput("Select an Item to use: ");
                 try {
                     player.useItem(player.getInventory().get(playerDecision-1));
+                    typewrite("\n" + ANSI_BLUE + player.getName() + " used " + player.getInventory().get(playerDecision - 1).getName() + RESET+ "\n");
                 } catch (Exception e) {
                     break;
                 }
@@ -218,6 +219,20 @@ public class GameFlow {
         waitSeconds(2);
     }
 
+    public static void displayOutro(Player player) {
+        typewrite(ANSI_BLUE + "\nAFTER his second defeat at the hands of the " + player.getFortune() + ANSI_YELLOW + " " + player.getName() + RESET
+        + ANSI_GREEN +",\nChris-tofer the Script-King,");
+        waitSeconds(4);
+        typewrite(100, ANSI_RED + "was vaporized into a cloud of dust." + ANSI_BLUE, true);
+        waitSeconds(1);
+        typewrite("\nIt is said that in those forsaken Ruins of Be'Ta, there is no longer something to fear.");
+        waitSeconds(1);
+        typewrite("\nYou've done it, " + ANSI_YELLOW + player.getName() + ".");
+        waitSeconds(2);
+        typewrite("\nFINAL STATS: " + RESET);
+        typewrite(1, player.toString(), true);
+
+    }
 
     public static Player runCharacterCreation() {
         String name = getNameSequence();
@@ -264,12 +279,13 @@ public class GameFlow {
             typewrite(ANSI_BLUE +  "\nYou have entered room " + room.getRoomNumber() + " of the Ruins of Be'Ta." + RESET);
             exploreRoom(room, player);
         }
+        displayOutro(player);
     }
 
     public static ArrayList<Room> createDungeon(int numOfRooms) {
         ArrayList<Room> tempDungeon = new ArrayList<>();
         
-        for (int i = 1; i <= numOfRooms; i++) {
+        for (int i = 9; i <= numOfRooms; i++) {
             if (i == rollRandom(1, numOfRooms)) {
                 tempDungeon.add(new Room("Special", i)); // Add special room for the dungeon size
             }
@@ -291,7 +307,15 @@ public class GameFlow {
             else {
                 tempDungeon.add(new Room("Battle", i)); // Add battle room for any other room
             }
-            
+        }
+        try {
+            Room lastRoom = tempDungeon.remove(numOfRooms); // Removes last room whilst storing it
+            lastRoom.clearEnemies(); // Clears enemies
+            lastRoom.addEnemyToRoom(new Boss("Final Form Gardner", numOfRooms)); // Addes it back with final boss 
+            tempDungeon.add(lastRoom); 
+        } catch (Exception e) {
+            // Do nothing
+
         }
         return tempDungeon;
     }
@@ -400,7 +424,7 @@ public class GameFlow {
     }
 
     public static String getNameSequence() {
-        typewrite(40, "What is your name?", false);
+        typewrite(40, ANSI_BLUE + "\nWhat is your name?", false);
         String name = getStringInput(": ");
         if (name.isEmpty()) {
             typewrite(500, "...", true);
@@ -461,7 +485,7 @@ public class GameFlow {
     }
 
     public static void determineWinner(Object winner, Player player, Enemy enemy, Room room) {
-        if (winner.getClass().isInstance(player.getClass()) || winner.getClass().equals(player.getClass())) {
+        if (winner instanceof Player) {
             typewrite(ANSI_BLUE + "\nDefeated " + ANSI_RED + enemy.getName() + ANSI_BLUE); 
             for (Item i : enemy.itemDrops) {
                 player.addItemToInventory(i);
@@ -472,10 +496,12 @@ public class GameFlow {
 
             room.getEnemies().remove(enemy); // Remove enemy after battle.
                         
-        } else if (winner.getClass().isInstance(enemy.getClass())) { // IF ENEMY IS WINNER
+        } else if (winner instanceof Enemy) {
             gameOver();
-        } else { // NULL
+         } else {
+
             typewrite(ANSI_BLUE + "\nYou fled." + RESET);
+            waitSeconds(1);
         }
     }
     
@@ -528,33 +554,47 @@ public class GameFlow {
                         break;
                     }
                     break;
-                case 2: //TODO Use Item
+                case 2:
                     for (int i = 0; i < player.getInventory().size(); i++) {
                     System.out.print("\n\t" + (i + 1) + ".) ");
                     typewrite(1, player.getInventory().get(i).toString(),true);
                     }
                     playerDecision = getIntInput("Select an Item to use: ");
                     player.useItem(player.getInventory().get(playerDecision - 1));
+                    typewrite("\n" + ANSI_BLUE + player.getName() + " used " + player.getInventory().get(playerDecision - 1).getName() + RESET+ "\n");
                     break;
-                case 3: //TODO Study Enemy
+                case 3: 
                     typewrite("\n" + ANSI_BLUE + enemy.inspect());
                     typewrite("\nEnemy health: " + enemy.getHealth() + "/" + enemy.getMaxHealth() + RESET);
                     break;
-                case 4: //TODO Attempt Flee
+                case 4:
                     float fleeChance = rollRandomFloat();
                     if (fleeChance <= player.getFleeChance()) { 
-
-                        return Optional.empty(); // Fleeing, so no winner
+                        if (!enemy.isBoss()) {
+                            return Optional.empty();  // Fleeing, so no winner
+                        }
+                        typewrite("\nYour legs won't carry you far enough quick enough.\n");
+                        
+                    } else {
+                        typewrite(ANSI_BLUE + "\nYou tried to flee, ");
+                        waitSeconds(1);
+                        typewrite(ANSI_BLUE + "\n... But you couldn't get away! ");
+                        waitSeconds(1);
+                        int enemyDamageDealt = applyCritChanceMultiplier(enemy.getDamage(), enemy.getCritChance(), enemy.getCritMultiplier());
+                        player.takeDamage(enemyDamageDealt);
+                        typewrite("\n" + ANSI_RED + enemy.getName() + ANSI_BLUE + " " + enemy.getAttackDescription() + " " + player.getName() + ANSI_BLUE
+                        + " for " + ANSI_YELLOW + enemyDamageDealt
+                        + " DMG!" + RESET);
                     }
                 default:
                     break;
             }
         }
         if (player.isDead()) {
-            return player;
+            return enemy;
         }
         else if (enemy.isDead()) {
-            return enemy;
+            return player;
         }
         else {
             return null;
@@ -563,6 +603,11 @@ public class GameFlow {
 
     public static void gameOver() {
         gameOver = true;
+        waitSeconds(2);
+        moveDown();
+        typewrite(ANSI_RED + "Game Over " + RESET);
+        runGameLoop();
+        
     }
     public static int getPlayerDamage(Player player) {
         Weapon weapon = player.getEquippedWeapon();
@@ -584,6 +629,7 @@ public class GameFlow {
         }
     }
 
+    // AI USAGE: Because we don't yet have experience with threads or flags, I queried claude to assist in the usage of them for this method.
     public static float multiplierMiniGame(long millisecondSpeed) {
         float multipler;
         final boolean[] enterPressed = {false};

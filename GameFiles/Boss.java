@@ -37,6 +37,7 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Worn Football"));
+                break;
 
 
             case "Adamaro, First to Desire":
@@ -53,6 +54,7 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("College Deferral"));
+                break;
 
             case "Amzu, Swarm's Hunger":
                 this.inspectDescription = "A simple nantuko transformed by the power of the dungeon core itself. Though he gained great power and rose to be the leader of the nantuko he lost much of his sanity and composure.";
@@ -68,12 +70,12 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("FISH!"));
-                
+                break;
 
             case "Final Form Gardner":
                 this.inspectDescription = "THE ULTIMATE BEING. NO BEING BEFORE HOLDS A CANDLE TO HIS POWER. Except maybe you...";
-                this.description = "God Gardner's final form. Just give up and accept your demise.";
-                this.attackDescription = "Politely asks you to not ";
+                this.description = "Gardner's final form. Just give up and accept your demise.";
+                this.attackDescription = "Politely requests that you to not interupt";
                 this.maximumHP = 1400;
                 this.currentHP = maximumHP;
                 this.damage = 140;
@@ -87,9 +89,13 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
-
+                break;
               
         }
+    }
+    @Override
+    public boolean isBoss(){
+        return true;
     }
     public static String returnRandom() { // Returns a random enemy name from the nameChoices list
         int index = (int) (Math.random() * (bossNames.length));

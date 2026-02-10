@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Dictionary;
 
 public class Player {
@@ -113,8 +114,14 @@ public class Player {
         if (item.getMarkPointsValue() >= 0) {
             currentMP += item.getMarkPointsValue();
         }
-        if (!item.getStatUpdateValue().isEmpty()) {
+        if (item.getStatUpdateValue().isEmpty()) {
             return;
+        } else {
+            // I used cursor here because I couldn't get the enchanced for loop to work.
+            for (String statName : Collections.list(item.getStatUpdateValue().keys())) {
+                int statChange = item.getStatUpdateValue().get(statName);
+                stats.put(statName, stats.get(statName) + statChange);
+            }
         }
         dropItem(item);
     }
@@ -141,6 +148,10 @@ public class Player {
 
     public float getFleeChance() {
         return fleeChance;
+    }
+
+    public String getFortune() {
+        return fortune;
     }
 
     @Override

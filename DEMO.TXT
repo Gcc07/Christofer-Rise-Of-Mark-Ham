@@ -1,0 +1,4 @@
+This game works through text input. No inputs (other than 1, 2, 3, 4, etc...) are generally required to play the game.
+When you are prompted for input, (Generally indicated by the provision of a colon - ":") simply input your desired action
+
+Actions are specified, aside from the battle action. A bar will progress, and you must click "enter" at the proper time.
