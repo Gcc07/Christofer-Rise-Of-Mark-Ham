@@ -21,11 +21,14 @@ public class GameFlow {
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
     public static final String RESET = "\u001B[37m";
+    
+    
+    public static long typeSpeedMultiplier = 1;
+    public static final long BASE_TYPE_SPEED = 20;
+    public static final long MIN_TYPESPEED_MULTIPLER = 1;
+    public static final long MAX_TYPESPEED_MULTIPLER = 10;
 
-    public static long typeSpeed = 20;
-    public static final long MIN_TYPESPEED = 1;
-    public static final long MAX_TYPESPEED = 50;
-
+    public static boolean useWaiting = true;
 
     public static boolean useIntro = true;
     
@@ -70,10 +73,12 @@ public class GameFlow {
 
     // Roblox wait function in java!
     public static void waitSeconds(int seconds) {
-        try {
-            Thread.sleep(seconds * 1000L);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+        if (useWaiting) {
+            try {
+                Thread.sleep(seconds * 1000L);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -93,7 +98,7 @@ public class GameFlow {
             System.out.print(c);
             System.out.flush();
             try {
-                Thread.sleep(speed);
+                Thread.sleep(speed / typeSpeedMultiplier);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
@@ -112,7 +117,7 @@ public class GameFlow {
             System.out.print(c);
             System.out.flush();
             try {
-                Thread.sleep(typeSpeed);
+                Thread.sleep(BASE_TYPE_SPEED / typeSpeedMultiplier);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
@@ -143,20 +148,26 @@ public class GameFlow {
     public static void displaySettings() {
         System.out.println("\n================================");
         System.out.println(ANSI_CYAN + "CHRISTOFER: " + ANSI_PURPLE + "THE RISE OF MARK-HAM" + RESET);
-        System.out.printf("\n1. Set standard typewrite speed (current speed: " + typeSpeed + ")\n2. Toggle introduction before gameplay (using intro: " + useIntro + ")\n3. Back to home\n\n");
+        System.out.printf("\n1. Set standard typewrite speed (current speed: " + typeSpeedMultiplier + "x )" + 
+        "\n2. Toggle introduction before gameplay (using intro: " + useIntro + ")" +
+        "\n3. Toggle cinematic waiting (waiting: " + useWaiting + ")" +
+        "\n4. Back to home\n\n");
         int playerDecision = getIntInput("Input: ");
         switch(playerDecision) {
             case 1:
-                int selectedSpeed = getIntInput("\nEnter new type speed: ");
-                if (selectedSpeed >= MIN_TYPESPEED && selectedSpeed <= MAX_TYPESPEED) {
-                    typeSpeed = selectedSpeed;
+                int selectedSpeed = getIntInput("\nEnter new text speed (1x - 10x): ");
+                if (selectedSpeed >= MIN_TYPESPEED_MULTIPLER && selectedSpeed <= MAX_TYPESPEED_MULTIPLER) {
+                    typeSpeedMultiplier = selectedSpeed;
                 } else {
-                    System.out.println(ANSI_RED + "ERROR: Your type speed must be between " + MIN_TYPESPEED + " and " + MAX_TYPESPEED + RESET);
+                    System.out.println(ANSI_RED + "\nERROR: Your type speed must be between " + MIN_TYPESPEED_MULTIPLER + " and " + MAX_TYPESPEED_MULTIPLER + RESET);
                     waitSeconds(1);
                 }
                 displaySettings();
             case 2:
                 useIntro = !useIntro;
+                displaySettings();
+            case 3:
+                useWaiting = !useWaiting;
                 displaySettings();
             default:
                 runGameLoop();
@@ -224,7 +235,7 @@ public class GameFlow {
         typewrite(500, "...", false);
         waitSeconds(1);
         typewrite(10, ANSI_YELLOW + " perchance. \n" + RESET, true);
-        waitSeconds(3);
+        waitSeconds(2);
         typewrite(50, "Lets begin. ", false);
         waitSeconds(2);
     }
@@ -295,7 +306,7 @@ public class GameFlow {
     public static ArrayList<Room> createDungeon(int numOfRooms) {
         ArrayList<Room> tempDungeon = new ArrayList<>();
         
-        for (int i = 9; i <= numOfRooms; i++) {
+        for (int i = 1; i <= numOfRooms; i++) {
             if (i == rollRandom(1, numOfRooms)) {
                 tempDungeon.add(new Room("Special", i)); // Add special room for the dungeon size
             }
