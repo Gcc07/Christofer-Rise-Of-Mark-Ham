@@ -23,6 +23,10 @@ public class GameFlow {
     public static final String RESET = "\u001B[37m";
 
     public static long typeSpeed = 20;
+    public static final long MIN_TYPESPEED = 1;
+    public static final long MAX_TYPESPEED = 50;
+
+
     public static boolean useIntro = true;
     
     public static boolean gameOver = false;
@@ -143,7 +147,13 @@ public class GameFlow {
         int playerDecision = getIntInput("Input: ");
         switch(playerDecision) {
             case 1:
-                typeSpeed = getIntInput("\nEnter new type speed: ");
+                int selectedSpeed = getIntInput("\nEnter new type speed: ");
+                if (selectedSpeed >= MIN_TYPESPEED && selectedSpeed <= MAX_TYPESPEED) {
+                    typeSpeed = selectedSpeed;
+                } else {
+                    System.out.println(ANSI_RED + "ERROR: Your type speed must be between " + MIN_TYPESPEED + " and " + MAX_TYPESPEED + RESET);
+                    waitSeconds(1);
+                }
                 displaySettings();
             case 2:
                 useIntro = !useIntro;
