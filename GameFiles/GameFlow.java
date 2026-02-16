@@ -24,7 +24,7 @@ public class GameFlow {
     
     
     public static long typeSpeedMultiplier = 1;
-    public static final long BASE_TYPE_SPEED = 20;
+    public static final long BASE_TYPE_SPEED = 20; // Base amount between each character print
     public static final long MIN_TYPESPEED_MULTIPLER = 1;
     public static final long MAX_TYPESPEED_MULTIPLER = 10;
 
@@ -169,8 +169,15 @@ public class GameFlow {
             case 3:
                 useWaiting = !useWaiting;
                 displaySettings();
-            default:
+            case 4:
                 runGameLoop();
+            case 5: // hidden debug setting
+                useWaiting = false;
+                useIntro = false;
+                typeSpeedMultiplier = 5;
+                displaySettings();
+            default:
+                displaySettings();
         }
 
     }
@@ -193,9 +200,12 @@ public class GameFlow {
                 }
                 playerDecision = getIntInput("Select an Item to use: ");
                 try {
+                    
+                    Item item = player.getInventory().get(playerDecision - 1);
+                    typewrite("\n" + ANSI_YELLOW + player.getName() + item.getUseMessage() + item.getName() + RESET+ "\n");
                     player.useItem(player.getInventory().get(playerDecision-1));
-                    typewrite("\n" + ANSI_BLUE + player.getName() + " used " + player.getInventory().get(playerDecision - 1).getName() + RESET+ "\n");
                 } catch (Exception e) {
+                    typewrite(ANSI_RED + "Something happened." + RESET);
                     break;
                 }
                 
@@ -533,7 +543,7 @@ public class GameFlow {
 
 
         while(!player.isDead() && !enemy.isDead()) {
-            typewrite(5, "\n1. Attack\n2. Use Item\n3. Inspect " + enemy.getName() + "\n" + ANSI_BLACK + "4. Flee\n" + RESET, false);
+            typewrite(5, "\n1. Attack\n2. Use Item\n3. Inspect " + enemy.getName() + "\n" + "4. Inspect Self\n" + ANSI_BLACK + "5. Flee\n" + RESET, false);
             int playerDecision = getIntInput("\nInput: ");
             switch (playerDecision) { 
 
@@ -581,14 +591,25 @@ public class GameFlow {
                     typewrite(1, player.getInventory().get(i).toString(),true);
                     }
                     playerDecision = getIntInput("Select an Item to use: ");
-                    player.useItem(player.getInventory().get(playerDecision - 1));
-                    typewrite("\n" + ANSI_BLUE + player.getName() + " used " + player.getInventory().get(playerDecision - 1).getName() + RESET+ "\n");
+                    try {
+                        
+                        Item item = player.getInventory().get(playerDecision - 1);
+                        typewrite("\n" + ANSI_YELLOW + player.getName() + item.getUseMessage() + item.getName() + RESET+ "\n");
+                        player.useItem(player.getInventory().get(playerDecision-1));
+
+                    } catch (Exception e) {
+                        break;
+                    }
                     break;
                 case 3: 
                     typewrite("\n" + ANSI_BLUE + enemy.inspect());
                     typewrite("\nEnemy health: " + enemy.getHealth() + "/" + enemy.getMaxHealth() + RESET);
                     break;
                 case 4:
+                    typewrite("\n" + ANSI_BLUE + player.inspect());
+                    typewrite("\nYour health: " + player.getHealth() + "/" + player.getMaxHealth() + RESET);
+                    break;
+                case 5:
                     float fleeChance = rollRandomFloat();
                     if (fleeChance <= player.getFleeChance()) { 
                         if (!enemy.isBoss()) {

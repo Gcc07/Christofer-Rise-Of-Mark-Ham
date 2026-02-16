@@ -32,6 +32,7 @@ public class Weapon extends Item{
         this.name = name;
         this.scalingType = new Hashtable<>();
         this.critMultiplier = 1.2f;
+        this.useMessage = " equipped ";
         switch(name) { // I used claude to create the switch cases after I made one singular case. - GABE
             // Also, I wrote all of the item descriptions.
             case "N's Odachi of the East":

@@ -7,6 +7,7 @@ public class Player {
     protected boolean isDead = false;
     protected String name;
     protected String fortune;
+    protected String inspectDescription;
     protected int currentHP;
     protected int maximumHP;
     protected int currentMP;
@@ -127,7 +128,9 @@ public class Player {
     }
 
     public void dropItem(Item item) {
+        //System.out.println(items);
         items.remove(item);
+        //System.out.println(items);
     }
 
     public void equipWeapon(Weapon weapon) {
@@ -136,6 +139,20 @@ public class Player {
 
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
+    }
+
+    public String inspect() {
+        if (currentHP <= maximumHP * .3) {
+            inspectDescription = "Man, you're looking pretty rough.";
+        } else if (currentHP <= maximumHP * .6) {
+            inspectDescription = "You've looked worse.";
+        } else if (currentHP <= maximumHP * .8){
+            inspectDescription = "You're a little roughed up.";
+        }
+        else {
+            inspectDescription = "You feel fine.";
+        }  
+        return inspectDescription;
     }
 
     public void applyEffect() {
@@ -152,6 +169,14 @@ public class Player {
 
     public String getFortune() {
         return fortune;
+    }
+
+    public int getHealth() {
+        return currentHP;
+    }
+
+    public int getMaxHealth(){
+        return maximumHP;
     }
 
     @Override

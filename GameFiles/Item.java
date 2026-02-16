@@ -5,6 +5,7 @@ public class Item {
     protected String name;
     protected String description;
     protected String type;
+    protected String useMessage;
     protected float rarity; // IDK if this is going to be implemented
     protected float dropChance; // IDK if this is going to be implemented
 
@@ -19,6 +20,7 @@ public class Item {
     public Item(String name) {
         this.name = name;
         this.statUpdateValue = new Hashtable<>();
+        this.useMessage = " used ";
         switch(name) {
             case "Karim's Homework":
                 this.name = name;
@@ -137,6 +139,9 @@ public class Item {
         return "\n\t" + name + " | " + type + "\n\tDescription: " + description + "\n\t";
     }
 
+    public String getUseMessage() {
+        return useMessage;
+    }
     public String getType() {
         return type;
     }
