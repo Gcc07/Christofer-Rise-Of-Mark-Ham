@@ -13,9 +13,25 @@ public class Item {
     protected int markPointsValue = 0;
     protected Dictionary<String, Integer> statUpdateValue;
     public static String[] itemTypes = {"Consumable", "Key", "Pet"};
-    public static String[] itemNames = {"Karim's Homework", "Evan's Homework", "Samosas", "College Deferral", "Lil' Zingbah",
-    "Spotted Mushroom", "Withheld Toothbrush", "Worn Football", "Chess Pawn", "Killer Bunny", "FISH!",
-    "Heart Key", "Bomb Key", "Card Key", "Key Key", "Glowing Apple", "Classroom Key", "Olive Branch"};
+    public static String[] itemNames =
+    {"Karim's Homework", 
+    "Evan's Homework", 
+    "Samosas", 
+    "College Deferral", 
+    "Lil' Zingbah",
+    "Spotted Mushroom", 
+    "Withheld Toothbrush", 
+    "Worn Football", 
+    "Chess Pawn", 
+    "Killer Bunny", 
+    "FISH!",
+    "Heart Key", 
+    "Bomb Key", 
+    "Card Key", 
+    "Key Key", 
+    "Glowing Apple", 
+    "Classroom Key", 
+    "Olive Branch"};
 
     public Item(String name) {
         this.name = name;
@@ -130,6 +146,19 @@ public class Item {
                 this.statUpdateValue.put("Peace", 5);
                 this.statUpdateValue.put("Finesse", 1);
                 this.statUpdateValue.put("Smartness", 1);
+                break;
+            case "Weird Goo":
+                this.name = name;
+                this.description = "It's gross but it smells kind of good (Heals 50 HP, +1 Smartness)";
+                this.type = itemTypes[0];
+                this.healingValue = 50;
+                this.statUpdateValue.put("Smartness", 1);
+                break;
+            case "Bones":
+                this.name = name;
+                this.description = "Useless (Heals 2 HP)";
+                this.type = itemTypes[0];
+                this.healingValue = 2;
                 break;
             }
         }

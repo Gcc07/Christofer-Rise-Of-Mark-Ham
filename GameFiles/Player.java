@@ -16,6 +16,7 @@ public class Player {
     protected Dictionary<String, Integer> stats;
     protected ArrayList<Item> items;
     protected Weapon equippedWeapon;
+    protected Pet adoptedPet;
     
     public Player(String name, String fortune, Dictionary<String, Integer> stats, ArrayList<Item> items) {
         this.name = name;
@@ -100,6 +101,10 @@ public class Player {
                 break;
             case "Key":
                 return;
+            case "Pet":
+                Pet pet = (Pet)item;
+                adoptPet(pet);
+                break;
             default:
                 break;
         }
@@ -109,12 +114,20 @@ public class Player {
         currentHP = Math.min(currentHP + item.getHealingValue(), maximumHP);
         currentMP += item.getMarkPointsValue();
 
-            // I used cursor here because I couldn't get the enchanced for loop to work.
+            // I used cursor here because I couldn't get the enhanced for loop to work.
         for (String statName : Collections.list(item.getStatUpdateValue().keys())) {
                 int statChange = item.getStatUpdateValue().get(statName);
                 stats.put(statName, stats.get(statName) + statChange);
         }
         dropItem(item);
+    }
+
+    public void equipWeapon(Weapon weapon) {
+        equippedWeapon = weapon;
+    }
+
+    public void adoptPet(Pet pet) {
+        adoptedPet = pet;
     }
 
     public void dropItem(Item item) {
@@ -123,9 +136,6 @@ public class Player {
         //System.out.println(items);
     }
 
-    public void equipWeapon(Weapon weapon) {
-        equippedWeapon = weapon;
-    }
 
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
@@ -171,8 +181,11 @@ public class Player {
 
     @Override
     public String toString() {
+        String petName;
+        if (adoptedPet == null) {petName = GameFlow.ANSI_BLACK + "None" + GameFlow.RESET;} else {petName = adoptedPet.getName();} // One liner assigning pet name
         return "\nName: " + name + " | Level: " + level + " | Fortune: " + fortune + "\n================================" + 
             "\nWeapon: " + GameFlow.RESET + equippedWeapon.name + GameFlow.RESET +
+            "\nPet: " + GameFlow.RESET + petName + GameFlow.RESET +
             "\nHealth: " + currentHP + " / " + maximumHP +
             "\nMark Points: " + currentMP + 
             "\nStats: " + 

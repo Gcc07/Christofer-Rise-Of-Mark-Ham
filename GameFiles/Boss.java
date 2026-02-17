@@ -90,6 +90,32 @@ public class Boss extends Enemy {
                 this.itemDrops.add(new Item("Samosas"));
                 this.itemDrops.add(new Item("Samosas"));
                 break;
+
+            case "Mark-Ham":
+                this.inspectDescription = GameFlow.ANSI_RED + "This is not the true form of Christofer, it is merely his phantom MARK-HAM";
+                this.description = "You already know, just how cooked you are.";
+                this.attackDescription = "Says to stretch more";
+                this.maximumHP = 2000;
+                this.currentHP = maximumHP;
+                this.damage = 200;
+                this.critChance = .99f; 
+                this.critMultiplier = 1.8f;
+                this.markPointsValue = 5000;
+                this.itemDrops.add(new Item("Mr. Mark's HAM-BLADE"));
+                break;
+
+            case "Christofer":
+                this.inspectDescription = GameFlow.ANSI_RED + "Bear witness to the true form of Christofer, covetor of the dungeon core";
+                this.description = "His darkness is attempting to swallow you whole, and you start to wonder, should you let it?";
+                this.attackDescription = "";
+                this.maximumHP = 4000;
+                this.currentHP = maximumHP;
+                this.damage = 400;
+                this.critChance = 1.0f; 
+                this.critMultiplier = 2f;
+                this.markPointsValue = 10000;
+                this.itemDrops.add(new Item("Mr. Mark's HAM-BLADE"));
+                break;
               
         }
     }

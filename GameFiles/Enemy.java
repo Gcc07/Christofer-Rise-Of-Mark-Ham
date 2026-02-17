@@ -58,12 +58,15 @@ public class Enemy {
                 this.maximumHP = 80;
                 this.currentHP = maximumHP;
                 this.damage = 10;
+                this.itemDrops.add(new Item("Weird Goo"));
                 break;
             case "Skeleton":
                 this.inspectDescription = "Evan The Destroyer is known for taking these down. You can too. (Beware, it's armed. It could be more damaging than expected...)";
                 this.maximumHP = 50;
                 this.currentHP = maximumHP;
                 this.damage = 75;
+                this.itemDrops.add(new Item("Bones"));
+                this.itemDrops.add(new Item("Bones"));
                 break;
             case "Hell-Pig":
                 this.inspectDescription = "A hellish sight, it's been mottled and maimed by who-knows what.";

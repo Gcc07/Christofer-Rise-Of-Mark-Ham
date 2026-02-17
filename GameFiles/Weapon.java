@@ -43,8 +43,9 @@ public class Weapon extends Item{
                 break;
                 
             case "Cursed Mouse":
-                this.damage = 30;
-                this.critChance = 0.10f;
+                this.damage = 1;
+                this.critChance = 0.50f;
+                this.critMultiplier = 200f;
                 this.description = "A weapon forged of plasticite, it periodically phases in and out of reality.";
                 this.scalingType.put("Anger", 0.20f);
                 // Special: 50/50 chance for 50% more or less damage
@@ -66,7 +67,8 @@ public class Weapon extends Item{
                 
             case "Sixsev-UN-chucks of Troy":
                 this.damage = 42; // Multiple of 6 and 7
-                this.critChance = 0.12f;
+                this.critChance = 0.67f;
+                this.critMultiplier = 1.13f;
                 this.description = "A six-inch link of pure iron chained two a seven-inch hilt of gold. You feel indecisive in it's presence.";
                 // Special: Always does multiple of 6 or 7 damage
                 break;
@@ -87,13 +89,13 @@ public class Weapon extends Item{
             case "Katars of Humanity":
                 this.damage = 38;
                 this.critChance = 0.14f;
-                this.description = "Eastern Weapons fitted to ones palm, unmistakeabily drawing power from a balance of rage and calm.";
+                this.description = "Eastern Weapons fitted to ones palm, unmistakeably drawing power from a balance of rage and calm.";
                 // Special: Scales with peacefulness and anger
                 break;
                 
             case "Unicycle":
-                this.damage = 25;
-                this.critChance = 0.25f;
+                this.damage = 24;
+                this.critChance = .99f;
                 this.description = "A weapon, perhaps from another time... It grants you speed untold.";
                 break;
                 
@@ -105,22 +107,27 @@ public class Weapon extends Item{
                 
             case "Sam's Dagger":
                 this.damage = 20;
-                this.critChance = 0.5f;
-                this.description = "A dagger of unknown orgin. It has a tag hanging off to the side, simply reading 'Sams'";
+                this.critChance = 0.8f;
+                this.description = "A dagger of unknown origin. It has a tag hanging off to the side, simply reading 'Sams'";
                 break;
                 
             case "Mr. McCuen's Pearson Piercer":
-                this.damage = 55;
+                this.damage = 80;
                 this.critChance = 0.11f;
                 this.description = "A terrifying thing. A horrible thing. A thing of unspeakable horrors... Pearson.";
                 break;
                 
             case "Mr. Gardner's Participation Point Piercer":
-                this.damage = 28;
+                this.damage = 30;
                 this.critChance = 0.30f;
                 this.description = "The lands of Earlycolegia only exist because of the Whim of Mr. Gardner. His defeat at the hands of the moon warrior was fate, yet he did not die. This weapon is proof of that.";
                 break;
                 
+            case "Mr. Mark's HAM-BLADE":
+                this.damage =  100;
+                this.critChance = .33f;
+                this.description = "It's a blade made of ham that's ridiculously strong. What more do you want?";
+            
             default:
                 this.damage = 10;
                 this.critChance = 0.05f;
@@ -135,6 +142,10 @@ public class Weapon extends Item{
 
     public int getDamage() {
         return damage;
+    }
+
+    public void setDamage(int newDamage) {
+        damage = newDamage;
     }
 
     public float getCritChance() {

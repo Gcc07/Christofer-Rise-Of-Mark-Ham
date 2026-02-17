@@ -25,8 +25,8 @@ public class GameFlow {
     
     public static long typeSpeedMultiplier = 1;
     public static final long BASE_TYPE_SPEED = 20; // Base amount between each character print
-    public static final long MIN_TYPESPEED_MULTIPLER = 1;
-    public static final long MAX_TYPESPEED_MULTIPLER = 10;
+    public static final long MIN_TYPESPEED_MULTIPLIER = 1;
+    public static final long MAX_TYPESPEED_MULTIPLIER = 10;
 
     public static boolean useWaiting = true;
 
@@ -139,7 +139,7 @@ public class GameFlow {
         } else if (playerDecision == 2) {
             displaySettings();
         }
-        dungeon = createDungeon(30);
+        dungeon = createDungeon(15);
         enterDungeon(dungeon, player);
     }
 
@@ -156,10 +156,10 @@ public class GameFlow {
         switch(playerDecision) {
             case 1:
                 int selectedSpeed = getIntInput("\nEnter new text speed (1x - 10x): ");
-                if (selectedSpeed >= MIN_TYPESPEED_MULTIPLER && selectedSpeed <= MAX_TYPESPEED_MULTIPLER) {
+                if (selectedSpeed >= MIN_TYPESPEED_MULTIPLIER && selectedSpeed <= MAX_TYPESPEED_MULTIPLIER) {
                     typeSpeedMultiplier = selectedSpeed;
                 } else {
-                    System.out.println(ANSI_RED + "\nERROR: Your type speed must be between " + MIN_TYPESPEED_MULTIPLER + " and " + MAX_TYPESPEED_MULTIPLER + RESET);
+                    System.out.println(ANSI_RED + "\nERROR: Your type speed must be between " + MIN_TYPESPEED_MULTIPLIER + " and " + MAX_TYPESPEED_MULTIPLIER + RESET);
                     waitSeconds(1);
                 }
                 displaySettings();
@@ -237,7 +237,7 @@ public class GameFlow {
         waitSeconds(1);
         typewrite("It is said that in those forsaken Dungeons, he plots his return to power.");
         waitSeconds(1);
-        typewrite("Whispers, rumors, and half-forgotten tales suggest that " + ANSI_PURPLE + "World Conqueror Mark-Ham " + ANSI_BLUE + "is, in truth, " + ANSI_GREEN + "a vassal of Chris-tofer." + ANSI_BLUE);
+        typewrite("Whispers, rumors, and half-forgotten tales suggest that " + ANSI_PURPLE + "World Conqueror Mark-Ham " + ANSI_BLUE + "is, in truth, " + ANSI_GREEN + "a vessel of Chris-tofer." + ANSI_BLUE);
         waitSeconds(1);
         typewrite("If " + ANSI_GREEN + "The Script-King's" + ANSI_BLUE + " plan to merge with"+ ANSI_BLACK + " the Core of the Dungeon " + ANSI_BLUE + "comes to fruition, his influence on this world might become to much to handle.");
         waitSeconds(1);
@@ -315,8 +315,8 @@ public class GameFlow {
 
     public static ArrayList<Room> createDungeon(int numOfRooms) {
         ArrayList<Room> tempDungeon = new ArrayList<>();
-        
-        for (int i = 1; i <= numOfRooms; i++) {
+        int startingRoom = 1;
+        for (int i = startingRoom; i <= numOfRooms; i++) {
             if (i == rollRandom(1, numOfRooms)) {
                 tempDungeon.add(new Room("Special", i)); // Add special room for the dungeon size
             }
@@ -326,10 +326,10 @@ public class GameFlow {
             else if (i == 3) {
                 tempDungeon.add(new Room("Loot", i)); // add loot room for third floor (so player understands what it is.)
             }
-            else if (i % 10 == 0) {
+            else if (i % 5 == 0) {
                 tempDungeon.add(new Room("Boss", i)); // Add boss room for every 10 floors
             }
-            else if (i % 5 == 0) {
+            else if (i % 4 == 0) {
                 tempDungeon.add(new Room("Shop", i)); // Add shop room for every 5 floors
             }
             else if (i % 7 == 0) {
@@ -395,6 +395,17 @@ public class GameFlow {
                         waitSeconds(1);
                     }
                 }
+
+                // if room is special room and you take all the items
+                
+                if (room.getRoomType().equals("Special") && (room.getItems().isEmpty())) {
+                        waitSeconds(1);
+                        typewrite(ANSI_RED + "Your greed has been noticed." + RESET);
+                        Enemy evilGuy = new Enemy("Mark-Ham", room.getRoomNumber());
+                        Object winner = battle(player, evilGuy);
+                        determineWinner(winner, player, evilGuy, room);
+                        waitSeconds(1);
+                    }
                 exploreRoom(room, player);
                 break;
 
@@ -428,6 +439,10 @@ public class GameFlow {
                     determineWinner(winner, player, foundEnemy, room);
                 } 
                 else {
+                    if (room.getRoomType().equals("Boss")) {
+                        typewrite(ANSI_RED + "\nYou have unfinished business in here. You cannot leave just yet." + RESET);
+                        exploreRoom(room, player);
+                    }
                     typewrite(ANSI_BLUE + "\nYou attempt to move rooms");
                     waitSeconds(1);
                     typewrite(200, "..." + RESET, true);
@@ -489,7 +504,8 @@ public class GameFlow {
             "Mason", "Charlotte", "Lucas", "Mia", "Henry",
             "Harper", "Benjamin", "Amelia", "James", "Grace",
             "Daniel", "Lily", "Booh", "Chloe", "Jackson",
-            "Zoe", "Samuel", "Syd", "David", "Violet", "Saturnu"
+            "Zoe", "Samuel", "Syd", "David", "Violet", "Saturnu",
+            "Monkey D. "
         };
         String[] lastNames = {
             "Kardeenis", "Muhrgi", "Gard-nare", "Zefah", "Mikyuin",
@@ -585,7 +601,7 @@ public class GameFlow {
                         break;
                     }
                     break;
-                case 2:
+                case 2: // Use Item
                     for (int i = 0; i < player.getInventory().size(); i++) {
                     System.out.print("\n\t" + (i + 1) + ".) ");
                     typewrite(1, player.getInventory().get(i).toString(),true);
@@ -601,15 +617,15 @@ public class GameFlow {
                         break;
                     }
                     break;
-                case 3: 
+                case 3: // Inspect Enemy
                     typewrite("\n" + ANSI_BLUE + enemy.inspect());
                     typewrite("\nEnemy health: " + enemy.getHealth() + "/" + enemy.getMaxHealth() + RESET);
                     break;
-                case 4:
+                case 4: // Inspect Self
                     typewrite("\n" + ANSI_BLUE + player.inspect());
                     typewrite("\nYour health: " + player.getHealth() + "/" + player.getMaxHealth() + RESET);
                     break;
-                case 5:
+                case 5: // Flee
                     float fleeChance = rollRandomFloat();
                     if (fleeChance <= player.getFleeChance()) { 
                         if (!enemy.isBoss()) {
@@ -673,7 +689,7 @@ public class GameFlow {
 
     // AI USAGE: Because we don't yet have experience with threads or flags, I queried claude to assist in the usage of them for this method.
     public static float multiplierMiniGame(long millisecondSpeed) {
-        float multipler;
+        float multiplier;
         final boolean[] enterPressed = {false};
         final int[] pressPhase = {-1}; // -1 = not pressed, 0-2 = phase types (red, yellow then green.)
 
@@ -778,30 +794,30 @@ public class GameFlow {
         switch (pressPhase[0]) {
             case -1: // Didn't click
                 typewrite(10, ANSI_GREY + "Miss!",false);
-                multipler = 0.6f;
+                multiplier = 0.6f;
                 break;
             case 0: // Red
                 typewrite(10,ANSI_RED + "Yikes!",false);
-                multipler = 0.8f;
+                multiplier = 0.8f;
                 break;
             case 1: // Yellow
                 typewrite(10,ANSI_YELLOW + "Meh.",false);
-                multipler = 1f;
+                multiplier = 1f;
                 break;
             case 2: // Green
                 typewrite(10,ANSI_GREEN + "Hit!",false);
-                multipler = 1.1f;
+                multiplier = 1.1f;
                 break;
             case 3: // Blue
                 typewrite(10,ANSI_CYAN+ "Brilliant!",false);
-                multipler = 1.5f;
+                multiplier = 1.5f;
                 break;
             default:
-                multipler = .5f;
+                multiplier = .5f;
                 break;
         }
         System.out.println();
-        return multipler;
+        return multiplier;
     }
 
 }
