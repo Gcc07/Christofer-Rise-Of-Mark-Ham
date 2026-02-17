@@ -106,23 +106,13 @@ public class Player {
     }
 
     public void consumeItem(Item item) {
-        if (item.getHealingValue() >= 0) {
-            currentHP += item.getHealingValue();
-            if (currentHP > maximumHP) {
-                currentHP = maximumHP;
-            }
-        }
-        if (item.getMarkPointsValue() >= 0) {
-            currentMP += item.getMarkPointsValue();
-        }
-        if (item.getStatUpdateValue().isEmpty()) {
-            return;
-        } else {
+        currentHP = Math.min(currentHP + item.getHealingValue(), maximumHP);
+        currentMP += item.getMarkPointsValue();
+
             // I used cursor here because I couldn't get the enchanced for loop to work.
-            for (String statName : Collections.list(item.getStatUpdateValue().keys())) {
+        for (String statName : Collections.list(item.getStatUpdateValue().keys())) {
                 int statChange = item.getStatUpdateValue().get(statName);
                 stats.put(statName, stats.get(statName) + statChange);
-            }
         }
         dropItem(item);
     }
