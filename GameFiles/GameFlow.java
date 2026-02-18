@@ -401,7 +401,7 @@ public class GameFlow {
                 if (room.getRoomType().equals("Special") && (room.getItems().isEmpty())) {
                         waitSeconds(1);
                         typewrite(ANSI_RED + "Your greed has been noticed." + RESET);
-                        Enemy evilGuy = new Enemy("Mark-Ham", room.getRoomNumber());
+                        Boss evilGuy = new Boss("Mark-Ham", room.getRoomNumber());
                         Object winner = battle(player, evilGuy);
                         determineWinner(winner, player, evilGuy, room);
                         waitSeconds(1);
