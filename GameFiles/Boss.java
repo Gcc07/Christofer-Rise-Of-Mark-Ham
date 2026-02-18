@@ -3,7 +3,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 public class Boss extends Enemy {
-    public static String[] bossNames = {"Rith, the Awakener", "Adamaro, First to Desire", "Amzu, Swarm's Hunger", "Mr. McCuen, Secret Saboteur", "Final Form Gardner"};
+    public static String[] bossNames = {"Rith, the Awakener", "Adamaro, First to Desire", "Amzu, Swarm's Hunger", "Final Form Gardner"};
     protected Dictionary<String, Integer> enemyStats;
 
     /** Boss version of Enemy
@@ -78,7 +78,7 @@ public class Boss extends Enemy {
                 this.attackDescription = "Politely requests that you to not interupt";
                 this.maximumHP = 1400;
                 this.currentHP = maximumHP;
-                this.damage = 140;
+                this.damage = 15;
                 this.critChance = .8f; 
                 this.critMultiplier = 1.6f;
                 this.markPointsValue = 1000;
@@ -97,7 +97,7 @@ public class Boss extends Enemy {
                 this.attackDescription = "Says to stretch more";
                 this.maximumHP = 2000;
                 this.currentHP = maximumHP;
-                this.damage = 200;
+                this.damage = 10;
                 this.critChance = .99f; 
                 this.critMultiplier = 1.8f;
                 this.markPointsValue = 5000;
@@ -110,7 +110,7 @@ public class Boss extends Enemy {
                 this.attackDescription = "";
                 this.maximumHP = 4000;
                 this.currentHP = maximumHP;
-                this.damage = 400;
+                this.damage = 10;
                 this.critChance = 1.0f; 
                 this.critMultiplier = 2f;
                 this.markPointsValue = 10000;

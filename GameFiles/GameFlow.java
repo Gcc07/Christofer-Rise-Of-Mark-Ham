@@ -439,7 +439,7 @@ public class GameFlow {
                     determineWinner(winner, player, foundEnemy, room);
                 } 
                 else {
-                    if (room.getRoomType().equals("Boss")) {
+                    if (room.getRoomType().equals("Boss") && !room.getEnemies().isEmpty()) {
                         typewrite(ANSI_RED + "\nYou have unfinished business in here. You cannot leave just yet." + RESET);
                         exploreRoom(room, player);
                     }
