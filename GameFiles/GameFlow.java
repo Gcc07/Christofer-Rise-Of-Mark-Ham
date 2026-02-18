@@ -595,7 +595,7 @@ public class GameFlow {
 
                         case 2:
                             //TODO implement moon blessing
-                            typewrite(ANSI_BLACK + "\nYou don't have a Moon Blessing");
+                            typewrite(ANSI_BLACK + "\nYou don't have a Moon Blessing" + RESET);
                             break;
                         default:
                         break;
