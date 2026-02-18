@@ -151,7 +151,8 @@ public class GameFlow {
         System.out.printf("\n1. Set standard typewrite speed (current speed: " + typeSpeedMultiplier + "x )" + 
         "\n2. Toggle introduction before gameplay (using intro: " + useIntro + ")" +
         "\n3. Toggle cinematic waiting (waiting: " + useWaiting + ")" +
-        "\n4. Back to home\n\n");
+        "\n4. Back to home\n" +
+        ANSI_GREEN + "5. SPEEDRUN MODE\n\n" + RESET);
         int playerDecision = getIntInput("Input: ");
         switch(playerDecision) {
             case 1:
@@ -184,7 +185,7 @@ public class GameFlow {
 
     public static void displayInGameOptions(Room room, Player player) {
         typewrite("\nMENU\n----");
-        typewrite("\n1. Check Self\n2. Use Item\n3. Information Codex\n" + ANSI_BLACK + "4. Return\n"+ ANSI_RED + "5. Exit\n" + RESET);
+        typewrite("\n1. Check Self\n2. Use Item\n" + ANSI_BLACK + "3. Return\n"+ ANSI_RED + "4. Exit\n" + RESET);
         int playerDecision = getIntInput("Input: ");
         switch (playerDecision) {
             case 1:
@@ -209,14 +210,13 @@ public class GameFlow {
                     break;
                 }
                 
-            case 3:
-                //TODO Information codex
-
-            case 4: 
+            case 3: 
                 break;
 
-            default:
+            case 4:
                 runGameLoop();
+
+            default:
                 break;
         }
         
